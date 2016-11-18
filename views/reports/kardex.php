@@ -29,6 +29,7 @@ and open the template in the editor.
         <script type="text/javascript" src="../../js/controls.js"></script>         
         <script type="text/javascript" src="../../js/jquery.price_format.2.0.min.js"></script>
         <script type="text/javascript" src="../../js/price_format.js"></script>
+        <script type="text/javascript" src="../../js/DataTables-1.10.12/media/js/jquery.dataTables.js"></script>
 
                 <script type="text/javascript" src="../../js/jsPDF-master/dist/jspdf.debug.js"></script>
         <script type="text/javascript" src="../../js/jsPDF-master/examples/js/basic.js"></script>
@@ -68,26 +69,35 @@ and open the template in the editor.
             <section class="contenido" id="contenidoGeneral2">
                 <h1>Reporte de Movimientos Kardex</h1>
                 <script type="text/javascript">
-                function demoFromHTML() {
+                    $(document).ready(function(){
+                        $('.datatable').DataTable({
+                            "order": [[ 1, "asc" ]],
+                            "paging":   false,
+                            "searching":   false,
+                            //"ordering": false,
+                            "info":     false
+                        });
+                    })
+                    function demoFromHTML() {
                         $("td:hidden,th:hidden",".table_to_pdf").show();
-                    var pdf = new jsPDF('l', 'pt', 'a4');
-                    
-                     pdf.cellInitialize();
-                    pdf.setFontSize(10);
-                    $.each( $('.table_to_pdf tr'), function (i, row){
-                        $.each( $(row).find("td, th"), function(j, cell){
-                             var txt = $(cell).text().trim().split(" ").join("\n") || " ";
-                            if ($(cell).prop("tagName") == "TH") {
+                        var pdf = new jsPDF('l', 'pt', 'a4');
+
+                        pdf.cellInitialize();
+                        pdf.setFontSize(10);
+                        $.each( $('.table_to_pdf tr'), function (i, row){
+                            $.each( $(row).find("td, th"), function(j, cell){
+                               var txt = $(cell).text().trim().split(" ").join("\n") || " ";
+                               if ($(cell).prop("tagName") == "TH") {
                                 $(cell).css("backgroundColor","grey")
                             }
                              var width = (j==0) ? 70 : 45; //make with column smaller
                              //var height = (i==0) ? 40 : 30;
                              pdf.cell(10, 50, 80, 50, txt, i);
+                         });
                         });
-                    });
                         pdf.save('Reporte de Movimientos Kardex.pdf');
 
-                }
+                    }
             </script>
                 <?php
                 if($_POST)
@@ -152,7 +162,7 @@ and open the template in the editor.
                                 
                                 $objSystemImpl = new SystemImpl();
                                 
-                                foreach ($objStockImpl->getByAlmacenBetweenDate($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $_POST['txbReferencia'], $_POST['selectColor']) as $valorStock) {
+                                foreach ($objStockImpl->getByAlmacenBetweenDate($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $_POST['txbReferencia'], isset($_POST['selectColor']) ? $_POST['selectColor'] : '') as $valorStock) {
                                     
                                     foreach ($objStockImpl->getFirstQuantityAvailableBetweenDate($valorStock->getCode(),$_POST['txbFechaInicio'], $_POST['txbFechaFin'],  $valorStock->getColor()) as $valFirst){
                                         $firstQuantityAvailable = $valFirst->getQuantity();
@@ -173,7 +183,7 @@ and open the template in the editor.
                                 <div class="jump"></div>    
                                 
                                 <!--BODY-->    
-                                <table id="myTable" class="tablesorter table_to_pdf">
+                                <table id="myTable" class="tablesorter table_to_pdf datatable">
                                     <thead>                                
                                     <tr>
                                         <th class="tdColor color-black">DOCUMENTO</th>
@@ -189,6 +199,7 @@ and open the template in the editor.
                                     </thead>
                                     <tbody>
                                 <?php
+                                $totalCostoEntradas = 0;
                                 require_once '../../models/DetailCxpImpl.php';
                                 $objDetailCxpImpl = new DetailCxpImpl();
                                 require_once '../../models/NoteDetailImpl.php';

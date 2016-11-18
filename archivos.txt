@@ -1,4 +1,6 @@
 /js/jsPDF-master
+/js/DataTables-1.10.12
+
 /views/reports/index.php
 /models/ClientImpl.php
 
