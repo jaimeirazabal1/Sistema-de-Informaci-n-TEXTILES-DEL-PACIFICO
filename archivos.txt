@@ -1,0 +1,6 @@
+/js/jsPDF-master
+/views/reports/index.php
+/models/ClientImpl.php
+
+\views\reports\kardex.php
+\views\reports\comisiones_vendedores.php
