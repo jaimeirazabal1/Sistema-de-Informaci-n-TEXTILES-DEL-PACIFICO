@@ -319,7 +319,7 @@ and open the template in the editor.
                                 
                                 </table>
                                 <!--END BODY-->        
-                                    
+                                <?php $objStockImpl->reporte_de_movimientos_kardex_comprimido() ?>
                                 <div class="jump"></div>    
                                 </form> 
                             <?php

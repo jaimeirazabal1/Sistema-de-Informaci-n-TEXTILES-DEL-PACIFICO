@@ -75,9 +75,9 @@ class PDF extends FPDF {
         foreach ($header as $col)
         {
             if($cont == 0)
-                $this->Cell(35, 7, $col, 0);
+                $this->Cell(25, 7, $col, 0);
             else if($cont == 1)
-                $this->Cell(100, 7, $col, 0);
+                $this->Cell(40, 7, $col, 0);
             else if($cont == 2)
                 $this->Cell(25, 7, $col, 0);
             else if($cont == 3)
@@ -87,6 +87,10 @@ class PDF extends FPDF {
             else if($cont == 5)
                 $this->Cell(25, 7, $col, 0, 0, 'C');
             else if($cont == 6)
+                $this->Cell(25, 7, $col, 0);
+            else if($cont == 7)
+                $this->Cell(25, 7, $col, 0);
+            else if($cont == 8)
                 $this->Cell(25, 7, $col, 0);
             $cont++;
         }
@@ -100,47 +104,33 @@ class PDF extends FPDF {
         $totalCostoInventario = 0;
         
         $objSystemImpl = new SystemImpl();
+        $data = $objStockImpl->reporte_de_movimientos_kardex_comprimido();
+        foreach ($data[0] as $valorStock) {            
+      
         
-        foreach ($objStockImpl->getByAlmacenBetweenDate($_POST['txbFechaInicio'],$_POST['txbFechaFin'], $_POST['txbReferencia'], isset($_POST['selectColor']) ? $_POST['selectColor'] : "grey") as $valorStock) {            
-            /*$quantityAvailable = $objStockImpl->getQuantityAvailable($valorStock->getCode(), $_POST['selectColor']);
-            $quantitySale = $objStockImpl->getQuantitySale($valorStock->getCode(), $_POST['selectColor']);
-            $totalCantidad = $quantityAvailable - $quantitySale; 
-
-            $prom = $objStockImpl->getPromPriceReport($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $valorStock->getCode(), $_POST['selectColor']);
-            $valueInventary = $prom * $totalCantidad;
-            
-            $precioVenta = $objStockImpl->getLastPriceSold($valorStock->getCode(), $valorStock->getColor());
-            $precioTotal = $precioVenta + ($precioVenta * $objSystemImpl->getValue(1)) / 100;*/
-            
-            $quantityAvailable = $objStockImpl->getQuantityAvailable($valorStock->getCode(), $valorStock->getColor());
-            $quantitySale = $objStockImpl->getQuantitySale($valorStock->getCode(), $valorStock->getColor());
-            $totalCantidad = $quantityAvailable - $quantitySale;
-            $precioVenta = $objStockImpl->getLastPriceSold($valorStock->getCode(), $valorStock->getColor());
-            $precioTotal = $precioVenta + ($precioVenta * $objSystemImpl->getValue(1)) / 100;
-            
-            $this->Cell(35, 5, utf8_decode($valorStock->getCode()), 0);
-            $this->Cell(100, 5, utf8_decode($valorStock->getName()), 0);
-            
-            $prom = $objStockImpl->getPromPriceReport($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $valorStock->getCode(), $valorStock->getColor());
-            $valueInventary = $prom * $totalCantidad;
-            
-            $this->Cell(25, 5, ''.number_format($prom), 0, 0, 'R');
-            $this->Cell(25, 5, ''.number_format($precioVenta,0), 0, 0, 'R');
-            $this->Cell(25, 5, ''.number_format(round($precioTotal, -3),0), 0, 0, 'R');
-            $this->Cell(25, 5, ''.number_format($totalCantidad,0), 0, 0, 'R');
-            $this->Cell(25, 5, ''.number_format($valueInventary), 0, 0, 'R');
+            $this->Cell(25, 5, $valorStock['DOCUMENTO'], 0, 0, 'L');
+            $this->Cell(25, 5, $valorStock['FECHA'], 0, 0, 'R');
+            $this->Cell(25, 5, $valorStock['ENTRADA'], 0, 0, 'R');
+            $this->Cell(25, 5, $valorStock['SALIDA'], 0, 0, 'R');
+            $this->Cell(25, 5, $valorStock['SALDO KGS'], 0, 0, 'R');
+            $this->Cell(25, 5, $valorStock['COSTO UNITARIO'], 0, 0, 'R');
+            $this->Cell(25, 5, $valorStock['COSTO ENTRADA'], 0, 0, 'R');
+            $this->Cell(25, 5, $valorStock['COSTO SALIDA'], 0, 0, 'R');
+            $this->Cell(25, 5, $valorStock['SALDO EN PESOS'], 0, 0, 'R');
             $this->Ln(5);                
             
-            $totalCostoInventario += $valueInventary;
-        }       
-        $this->Ln(10); 
-        $this->Cell(35, 5, '', 0);
-        $this->Cell(100, 5, '', 0);
+        }  
+         
+        $this->Ln(5); 
         $this->Cell(25, 5, '', 0);
         $this->Cell(25, 5, '', 0);
-        $this->Cell(25, 5, '', 0);
-        $this->Cell(25, 5, 'COSTO TOTAL INVENTARIO:', 0, 0, 'R');
-        $this->Cell(25, 5, ''.number_format($totalCostoInventario), 0, 0, 'R');
+        $this->Cell(25, 5, $data[1]['totalEntradas'], 0, 0, 'R');
+        $this->Cell(25, 5, $data[1]['totalSalidas'], 0, 0, 'R');
+        $this->Cell(25, 5, $data[1]['totalEntradas']-$data[1]['totalSalidas'], 0, 0, 'R');
+        $this->Cell(25, 5, '', 0, 0, 'R');
+        $this->Cell(25, 5, $data[1]['totalCostoEntradas'], 0, 0, 'R');
+        $this->Cell(25, 5, $data[1]['totalCostoSalidas'], 0, 0, 'R');
+        $this->Cell(25, 5, $data[1]['totalCostoEntradas']-$data[1]['totalCostoSalidas'], 0, 0, 'R');
         $this->Ln(5); 
 
     }

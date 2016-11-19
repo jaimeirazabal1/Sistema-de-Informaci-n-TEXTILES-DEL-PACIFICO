@@ -1,5 +1,14 @@
 <?php
+        /*
+            function para ordenar por fechas el resultado del metodo this->reporte_de_movimientos_kardex_comprimido
 
+        */
+        function sortFunction( $a, $b ) {
+            var_dump($a);
+            var_dump($b);
+            // /die;
+            return strtotime($a["FECHA"]) - strtotime($b["FECHA"]);
+        }
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -299,7 +308,144 @@ class StockImpl
             }
             return $foo;
         }
-        
+        /*
+            recibe los siguientes parametros
+            --------------------------------
+            string $_POST['txbReferencia']
+            string $_POST['txbFechaInicio']
+            string $_POST['txbFechaFin']
+
+            Campos que retorna en arreglo
+            -------------------------------
+            DOCUMENTO   FECHA   ENTRADA SALIDA  SALDO KGS   COSTO UNITARIO  COSTO ENTRADA   COSTO SALIDA    SALDO EN PESOS
+        */
+        public function reporte_de_movimientos_kardex_comprimido(){
+
+            $body = array();
+            $totalCostoEntradas = 0;
+            require_once 'DetailCxpImpl.php';
+            $objDetailCxpImpl = new DetailCxpImpl();
+            require_once 'NoteDetailImpl.php';
+            $objNoteDetailImpl = new NoteDetailImpl();
+            
+            $totalSaldo = 0;
+            $totalSaldoPesos = 0;
+            $totalEntradas = 0;
+            $totalSalidas = 0;  
+            $totalCosoEntradas = 0;
+            $totalCostoSalidas = 0;
+            $ultimoPrecioCosto = $this->getLastPriceSold($_POST['txbReferencia'], null);
+            $bodys=array();
+            $contSD = 1;
+            ////ENTRADAS SIN DOCUMENTO
+            foreach ($this->getWithoutDocument($_POST['txbReferencia']) as $valorSD) {
+                $totalSaldo += $valorSD->getQuantity();
+                $totalSaldoPesos += ($valorSD->getPriceBuy()*$valorSD->getQuantity());
+
+                $body['DOCUMENTO'] = $contSD;
+                $body['FECHA'] = $valorSD->getMoveDate();
+                $body['ENTRADA'] = $valorSD->getQuantity();
+                $body['SALIDA'] = 0;
+                $body['SALDO KGS'] = number_format($totalSaldo,2);
+                $body['COSTO UNITARIO'] = number_format($valorSD->getPriceBuy());
+                $body['COSTO ENTRADA'] = number_format($valorSD->getQuantity() * $valorSD->getPriceBuy());
+                $body['COSTO SALIDA'] = 0;
+                $body['SALDO EN PESOS'] = number_format($totalSaldoPesos);
+                $bodys[]=$body;
+                $contSD++;
+                $totalEntradas += $valorSD->getQuantity();  
+                $totalCostoEntradas += ($valorSD->getPriceBuy() * $valorSD->getQuantity());
+            }      
+            //ENTRADAS POR PAGAR
+            foreach ($objDetailCxpImpl->getByCodeBetweenDate($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $_POST['txbReferencia']) as $valorDCXP) {
+                $totalSaldo += $valorDCXP->getCantidad();
+                $totalSaldoPesos += ($valorDCXP->getValorUnitario()*$valorDCXP->getCantidad());
+
+                $body['DOCUMENTO'] = 'CXP-'.$valorDCXP->getCodeCxp();
+                $body['FECHA'] = $valorDCXP->getFechaCreacion();
+                $body['ENTRADA'] = $valorDCXP->getCantidad();
+                $body['SALIDA'] = 0;
+                $body['SALDO KGS'] = number_format($totalSaldo,2);
+                $body['COSTO UNITARIO'] = number_format($valorDCXP->getValorUnitario());
+                $body['COSTO ENTRADA'] = number_format($valorDCXP->getValorUnitario() * $valorDCXP->getCantidad());
+                $body['COSTO SALIDA'] = 0;
+                $body['SALDO EN PESOS'] = number_format($totalSaldoPesos);
+                $bodys[]=$body;
+                $totalEntradas += $valorDCXP->getCantidad();  
+                $totalCostoEntradas += ($valorDCXP->getValorUnitario() * $valorDCXP->getCantidad());
+            }      
+            //NOTAS CREDITO DEVOL DEL CLIENTE AL INVENTARIO
+            foreach ($objNoteDetailImpl->getByCodeBetweenDate($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $_POST['txbReferencia'], 'CR') as $valorNTC) {
+                $totalSaldo += $valorNTC->getDevolucion();
+                $totalSaldoPesos += ($ultimoPrecioCosto*$valorNTC->getDevolucion());
+
+                $body['DOCUMENTO'] = 'NTC-'.$valorNTC->getCode();
+                $body['FECHA'] = $valorNTC->getDate();
+                $body['ENTRADA'] = $valorNTC->getDevolucion();
+                $body['SALIDA'] = 0;
+                $body['SALDO KGS'] = number_format($totalSaldo,2);
+                $body['COSTO UNITARIO'] = number_format($ultimoPrecioCosto);
+                $body['COSTO ENTRADA'] = number_format($ultimoPrecioCosto * $valorNTC->getDevolucion());
+                $body['COSTO SALIDA'] = 0;
+                $body['SALDO EN PESOS'] = number_format($totalSaldoPesos);
+                $bodys[]=$body;
+                $totalEntradas += $valorNTC->getDevolucion();  
+                $totalCostoEntradas += ($ultimoPrecioCosto * $valorNTC->getDevolucion());
+            }
+            //NOTAS DEBITO DEVOL AL PROVEDOR SALIDA DEL INVENTARIO        
+            foreach ($objNoteDetailImpl->getByCodeBetweenDate($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $_POST['txbReferencia'], 'DE') as $valorNTD) {
+                $totalSaldo -= $valorNTD->getDevolucion();
+                $totalSaldoPesos -= ($ultimoPrecioCosto*$valorNTD->getDevolucion());
+
+                $body['DOCUMENTO'] = 'NTD-'.$valorNTD->getCode();
+                $body['FECHA'] = $valorNTD->getDate();
+                $body['ENTRADA'] = 0;
+                $body['SALIDA'] = $valorNTD->getDevolucion();
+                $body['SALDO KGS'] = number_format($totalSaldo,2);
+                $body['COSTO UNITARIO'] = number_format($ultimoPrecioCosto);
+                $body['COSTO ENTRADA'] = 0;
+                $body['COSTO SALIDA'] = number_format($ultimoPrecioCosto * $valorNTD->getDevolucion());
+                $body['SALDO EN PESOS'] = number_format($totalSaldoPesos);
+                $bodys[]=$body;
+                $totalSalidas += $valorNTD->getDevolucion();
+                $totalCostoSalidas += ($ultimoPrecioCosto * $valorNTD->getDevolucion());                                    
+            }    
+            require_once 'DetailRemisionImpl.php';
+            $objDetailRemisionImpl = new DetailRemisionImpl();            
+            //SALIDAS
+            foreach ($objDetailRemisionImpl->getByCodeBetweenDate($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $_POST['txbReferencia']) as $valorDR) {
+                $totalSaldo -= $valorDR->getQuantity();
+                $totalSaldoPesos -= ($ultimoPrecioCosto*$valorDR->getQuantity());
+
+
+                $body['DOCUMENTO'] = 'REM-'.$valorDR->getCodeRemision();
+                $body['FECHA'] = $valorDR->getMoveDate();
+                $body['ENTRADA'] = 0;
+                $body['SALIDA'] = $valorDR->getQuantity();
+                $body['SALDO KGS'] = number_format($totalSaldo,2);
+                $body['COSTO UNITARIO'] = number_format($ultimoPrecioCosto);
+                $body['COSTO ENTRADA'] = 0;
+                $body['COSTO SALIDA'] = number_format($ultimoPrecioCosto * $valorDR->getQuantity());
+                $body['SALDO EN PESOS'] = number_format($totalSaldoPesos);
+                $bodys[]=$body;
+                $totalSalidas += $valorDR->getQuantity();
+                $totalCostoSalidas += ($ultimoPrecioCosto * $valorDR->getQuantity());
+            }
+            $totales = array(
+                'totalEntradas'=>$totalEntradas,
+                'totalCostoEntradas'=>$totalCostoEntradas,
+                'totalSalidas'=>$totalSalidas,
+                'totalCostoSalidas'=>$totalCostoSalidas
+            );
+  
+            usort($bodys, function($a, $b){
+                $t1 = strtotime($a['FECHA']);
+                $t2 = strtotime($b['FECHA']);
+                return $t1 - $t2;    
+            });
+            return array($bodys,$totales);
+        }
+
         public function getByAlgodonBetweenDate($dateA, $dateB, $ref, $color)
 	{
             if(strcmp($ref, "") == 0)

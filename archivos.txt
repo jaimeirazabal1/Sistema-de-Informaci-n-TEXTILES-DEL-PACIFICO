@@ -3,6 +3,7 @@
 
 /views/reports/index.php
 /models/ClientImpl.php
+/models/StockImpl.php
 
 \views\reports\kardex.php
 \views\reports\comisiones_vendedores.php
