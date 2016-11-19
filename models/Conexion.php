@@ -32,7 +32,7 @@ class Conexion {
  
     private function __construct() {
         
-        $this->_sServidor = 'jaime-PC';
+        $this->_sServidor = 'localhost';
         $this->_sNombreBD = 'ONCE';
         $this->_sUsuario = 'agencia';
         $this->_sClave = 'agencia';

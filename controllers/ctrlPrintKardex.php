@@ -34,7 +34,7 @@ class PDF extends FPDF {
         $this->Cell(110, 6, 'Inventario por Rango de Fechas: ', 0, 0, 'L');
         //$this->Cell(110);
         $this->SetFont('Times', 'B', 12);
-        $this->Cell(0, 6, 'REPORTE DE INVENTARIO', 1, 0, 'C');
+        $this->Cell(0, 6, strtoupper('Reporte de Movimientos Kardex'), 1, 0, 'C');
 
         $this->SetFont('Times', '', 9);
         $this->Ln();
@@ -182,7 +182,7 @@ class PDF extends FPDF {
 }
 $pdf=new PDF('L','mm','Letter'); 
 //Títulos de las columnas
-$header = array('Referencia', utf8_decode('Descripción'), 'Costo Promedio','Precio Venta','Precio Total', 'Existencias', 'Costo Inv.');
+$header = array('Documento','Fecha', 'Entrada','Salida','Salgo Kgs', 'Costo Unitario', 'Costo Entrada','Costo Salida','Saldo en Pesos');
 $pdf->AliasNbPages();
 //Primera página
 $pdf->AddPage();

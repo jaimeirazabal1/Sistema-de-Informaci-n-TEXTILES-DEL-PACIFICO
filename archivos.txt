@@ -1,4 +1,4 @@
-/js/jsPDF-master
+
 /js/DataTables-1.10.12
 
 /views/reports/index.php
@@ -6,3 +6,8 @@
 
 \views\reports\kardex.php
 \views\reports\comisiones_vendedores.php
+
+
+\controllers\ctrlPrintKardex.php
+
+\css\style.css <- para el problema de los colores de las tablas

@@ -99,7 +99,7 @@ and open the template in the editor.
                         echo '<input id="txbFechaFin"  name="txbFechaFin" type="date" placeholder="HASTA" required value="'.$dateNow.'">';
                         
                         ?>                
-                        <select name="codigo_vendedor" id="" required>
+                        <select name="codigo_vendedor" id="">
                             <option value="">Seleccione</option>
                             <?php foreach ($vendedores as $key => $value): ?>
                                 <option value="<?php echo $value['VENTCCODIG'] ?>"><?php echo $value['VENTCNOMBR'] ?></option>

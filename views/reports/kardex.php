@@ -78,26 +78,7 @@ and open the template in the editor.
                             "info":     false
                         });
                     })
-                    function demoFromHTML() {
-                        $("td:hidden,th:hidden",".table_to_pdf").show();
-                        var pdf = new jsPDF('l', 'pt', 'a4');
-
-                        pdf.cellInitialize();
-                        pdf.setFontSize(10);
-                        $.each( $('.table_to_pdf tr'), function (i, row){
-                            $.each( $(row).find("td, th"), function(j, cell){
-                               var txt = $(cell).text().trim().split(" ").join("\n") || " ";
-                               if ($(cell).prop("tagName") == "TH") {
-                                $(cell).css("backgroundColor","grey")
-                            }
-                             var width = (j==0) ? 70 : 45; //make with column smaller
-                             //var height = (i==0) ? 40 : 30;
-                             pdf.cell(10, 50, 80, 50, txt, i);
-                         });
-                        });
-                        pdf.save('Reporte de Movimientos Kardex.pdf');
-
-                    }
+                    
             </script>
                 <?php
                 if($_POST)
@@ -109,7 +90,7 @@ and open the template in the editor.
                         echo '<input id="txbReferencia" required name="txbReferencia" type="text" placeholder="REFERENCIA" value="'.$_POST['txbReferencia'].'">';
                         ?>                        
                         <input id="btnConsultarKardex" type="submit" value="Consultar">
-                        <input id="btnGenerarKardex" type="button" value="Generar PDF" onclick="demoFromHTML();return false;">
+                        <input id="btnGenerarKardex" type="submit" value="Generar PDF">
                     </form>    
                 <?php
                 }
@@ -123,7 +104,7 @@ and open the template in the editor.
                         ?>
                         <input id="txbReferencia" name="txbReferencia" required type="text" placeholder="REFERENCIA">                        
                         <input id="btnConsultarKardex" type="submit" value="Consultar">
-                        <input id="btnGenerarKardex" type="button" value="Generar PDF" onclick="demoFromHTML();return false;">
+                        <input id="btnGenerarKardex" type="submit" value="Generar PDF">
                     </form>
                 <?php
                 }
@@ -162,7 +143,7 @@ and open the template in the editor.
                                 
                                 $objSystemImpl = new SystemImpl();
                                 
-                                foreach ($objStockImpl->getByAlmacenBetweenDate($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $_POST['txbReferencia'], isset($_POST['selectColor']) ? $_POST['selectColor'] : '') as $valorStock) {
+                                foreach ($objStockImpl->getByAlmacenBetweenDate($_POST['txbFechaInicio'], $_POST['txbFechaFin'], $_POST['txbReferencia'],$_POST['selectColor']) as $valorStock) {
                                     
                                     foreach ($objStockImpl->getFirstQuantityAvailableBetweenDate($valorStock->getCode(),$_POST['txbFechaInicio'], $_POST['txbFechaFin'],  $valorStock->getColor()) as $valFirst){
                                         $firstQuantityAvailable = $valFirst->getQuantity();
@@ -184,17 +165,17 @@ and open the template in the editor.
                                 
                                 <!--BODY-->    
                                 <table id="myTable" class="tablesorter table_to_pdf datatable">
-                                    <thead>                                
+                                    <thead style="background: #335D94 !important">                                
                                     <tr>
-                                        <th class="tdColor color-black">DOCUMENTO</th>
-                                        <th class="tdColor color-black" id="tdDate">FECHA</th>
-                                        <th class="tdColor color-black">ENTRADA</th>                                        
-                                        <th class="tdColor color-black">SALIDA</th>     
-                                        <th class="tdColor color-black">SALDO KGS</th>
-                                        <th class="tdColor color-black">COSTO UNITARIO</th>
-                                        <th class="tdColor color-black">COSTO ENTRADA</th>
-                                        <th class="tdColor color-black">COSTO SALIDA</th>     
-                                        <th class="tdColor color-black">SALDO EN PESOS</th>
+                                        <th class="tdColor">DOCUMENTO</th>
+                                        <th class="tdColor" id="tdDate">FECHA</th>
+                                        <th class="tdColor">ENTRADA</th>                                        
+                                        <th class="tdColor">SALIDA</th>     
+                                        <th class="tdColor">SALDO KGS</th>
+                                        <th class="tdColor">COSTO UNITARIO</th>
+                                        <th class="tdColor">COSTO ENTRADA</th>
+                                        <th class="tdColor">COSTO SALIDA</th>     
+                                        <th class="tdColor">SALDO EN PESOS</th>
                                     </tr>                                         
                                     </thead>
                                     <tbody>

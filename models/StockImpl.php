@@ -261,7 +261,7 @@ class StockImpl
                 $objStock = new Stock();
                 $objStock->setCode($row[0]);
                 $objStock->setName($row[1]);
-                $objStock->setColor($row[2]);
+                $objStock->setColor(isset($row[2]) ? $row[2] : 'grey');
                 /*$objStock->setMove($row[2]);
                 $objStock->setQuantity($row[3]);
                 $objStock->setPriceBuy($row[4]);
