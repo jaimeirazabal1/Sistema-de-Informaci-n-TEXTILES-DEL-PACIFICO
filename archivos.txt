@@ -1,12 +1,18 @@
 
 /js/DataTables-1.10.12
+/js/forms.js
+\js\html2excel
 
-/views/reports/index.php
+MODELOS
 /models/ClientImpl.php
 /models/StockImpl.php
 
+VISTAS
+/views/reports/index.php
 \views\reports\kardex.php
 \views\reports\comisiones_vendedores.php
+views/reports/stock.php
+
 
 PDF
 \controllers\ctrlPrintKardex.php

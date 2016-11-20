@@ -23,9 +23,26 @@ and open the template in the editor.
         <script src="../../js/jquery/jquery.js"></script>
         <script src="../../js/forms.js"></script>
         <script src="../../js/alertify/alertify.js"></script>
+        <script type="text/javascript" src="../../js/html2excel/src/jquery.table2excel.js"></script>
         <link href="../../css/alertify/alertify.css" rel="stylesheet">
         <link href="../../css/alertify/themes/default.css" rel="stylesheet">
         <title>Reporte Inventario</title>
+        <script type="text/javascript">
+        $(document).ready(function(){
+
+            $("#btnGenerarInventarioExcel").click(function(){
+              $("#tabla").table2excel({
+                exclude: ".noExl",
+                    name: "Excel Document Name",
+                    filename: "myFileName",
+                    fileext: ".xls",
+                    exclude_img: true,
+                    exclude_links: true,
+                    exclude_inputs: true
+              }); 
+            });
+        })
+        </script>
     </head>
     <body>
         <section class="contenedor">
@@ -82,6 +99,7 @@ and open the template in the editor.
                         ?>                        
                         <input id="btnConsultarInventario" type="submit" value="Consultar">
                         <input id="btnGenerarInventario" type="submit" value="Generar PDF">
+                        <input id="btnGenerarInventarioExcel" type="submit"  value="Generar Excel">
                     </form>    
                 <?php
                 }
@@ -108,6 +126,7 @@ and open the template in the editor.
                         
                         <input id="btnConsultarInventario" type="submit" value="Consultar">
                         <input id="btnGenerarInventario" type="submit" value="Generar PDF">
+                        <input id="btnGenerarInventarioExcel" type="submit"  value="Generar Excel">
                     </form>
                 <?php
                 }
@@ -134,7 +153,7 @@ and open the template in the editor.
                                 $totalCostoInventario = 0;
                             ?>
                                 <form method="post">
-                                <table>
+                                <table id="tabla">
                                     <tr>
                                         <th>REFERENCIA</th>
                                         <th>ARTICULO</th>

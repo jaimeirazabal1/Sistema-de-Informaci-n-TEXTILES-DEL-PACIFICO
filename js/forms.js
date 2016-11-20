@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     $("#btnConsultarInventario").click(function () {
         $('#formReporteInventario').attr('action', "stock.php");        
