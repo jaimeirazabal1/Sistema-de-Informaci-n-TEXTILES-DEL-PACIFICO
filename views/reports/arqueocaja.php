@@ -133,7 +133,29 @@ and open the template in the editor.
                                         <td>RECAUDOS</td>
                                         <td class="tdDerecha">'.number_format($sumTotalRecaudos,0).'</td>
                                         <td></td>
-                                    </tr>';                                
+                                    </tr>';
+                                ?>
+                                <tr>
+                                    <td colspan="3">
+                                        <table>
+                                            <tr>
+                                                <th>Código de Recaudo</th>
+                                                <th>Código de Crédito</th>
+                                                <th>Identificación del cliente</th>
+                                                <th>Nombre del Cliente</th>
+                                                <th>Valor Recaudo</th>
+                                                <th>Fecha Recaudo</th>
+                                                <th>Observación</th>
+                                                <th>Tipo Recaudo</th>
+                                            </tr>
+                                            <?php $recaudos=$objBillImpl->getRecaudos(); ?>
+                                            <?php foreach ($recaudos as $key => $value): ?>
+                                                
+                                            <?php endforeach ?>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <?php                                
                                 echo '<tr>
                                         <td>VENTAS CONTADO</td>
                                         <td class="tdDerecha">'.number_format($sumTotalContado,0).'</td>

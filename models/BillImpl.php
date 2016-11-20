@@ -27,7 +27,21 @@ class BillImpl
 	{
 		 
 	}
-        
+    public function getRecaudos(){
+        if (isset($_POST['txbFechaInicio'])) {
+          
+            $sql ="select recaucodig, recaucredi, crediclien, cliennombr, recauvalor, recaufecha, recauobser, recautipo from recaudo, credito, cliente where recaucredi = credicodig and crediclien = cliencodig and recaufecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))."' 00:00:00', 'dd/mm/yyyy hh24:mi:ss') and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))."' 23:59:59', 'dd/mm/yyyy hh24:mi:ss') order by recaufecha desc";
+            $conex = Conexion::getInstancia();
+            $stid = oci_parse($conex, $sql);
+            echo $sql.";";
+            oci_execute($stid);
+            $foo = array();
+            while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
+                $foo[]=$row;
+            }
+            return $foo; 
+        }
+    }   
         public function getAll()
 	{
             $sql = "SELECT fctr.FACTUCODIG, fctr.FACTUCLIEN, fctr.FACTUFECGE, fctr.FACTUVALOR, fctr.FACTUVALIV, fctr.FACTUUSUAR 

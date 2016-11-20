@@ -11,8 +11,8 @@ VISTAS
 /views/reports/index.php
 \views\reports\kardex.php
 \views\reports\comisiones_vendedores.php
-views/reports/stock.php
-
+/views/reports/stock.php
+/views/reports/arqueocaja.php
 
 PDF
 \controllers\ctrlPrintKardex.php
