@@ -8,7 +8,9 @@
 \views\reports\kardex.php
 \views\reports\comisiones_vendedores.php
 
-
+PDF
 \controllers\ctrlPrintKardex.php
+\controllers\ctrlPrintGastos.php
+
 
 \css\style.css <- para el problema de los colores de las tablas

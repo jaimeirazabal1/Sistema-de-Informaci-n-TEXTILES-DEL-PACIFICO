@@ -70,7 +70,7 @@ and open the template in the editor.
                 <?php
                 if($_POST)
                 {?>
-                    <form id="" action="" method="post">
+                    <form action="" method="post" id="formReporteGastos2">
                         <?php 
                         echo '<input id="txbFechaInicio"  name="txbFechaInicio" type="date" placeholder="DESDE"  value="'.$_POST['txbFechaInicio'].'">'; 
                         echo '<input id="txbFechaFin" name="txbFechaFin" type="date" placeholder="HASTA"  value="'.$_POST['txbFechaFin'].'">';                        
@@ -86,14 +86,14 @@ and open the template in the editor.
                                 <?php endif ?>
                             <?php endforeach ?>
                         </select>                        
-                        <input id="btnConsultarSeller" type="submit" value="Consultar">
-                        <input id="" type="button" onClick="demoFromHTML()" value="Generar PDF">
+                        <input id="btnConsultarGastos2" type="submit" value="Consultar">
+                        <input id="btnGenerarGastos2" type="submit" value="Generar PDF">
                     </form>    
                 <?php
                 }
                 else
                 {?>
-                    <form id="" action="" method="post">
+                    <form action="" method="post" id="formReporteGastos2">
                         <?php 
                         $dateNow = date("d/m/Y");
                         echo '<input id="txbFechaInicio" name="txbFechaInicio" type="date" placeholder="DESDE"  value="'.$dateNow.'">'; 
@@ -106,8 +106,8 @@ and open the template in the editor.
                                 <option value="<?php echo $value['CLIENCODIG'] ?>"><?php echo $value['CLIENNOMBR'] ?></option>
                             <?php endforeach ?>
                         </select>        
-                        <input id="btnConsultarSeller" type="submit" value="Consultar">
-                        <input id="" type="button" onClick="demoFromHTML()" value="Generar PDF">
+                        <input id="btnConsultarGastos2" type="submit" value="Consultar">
+                        <input id="btnGenerarGastos2" type="submit" value="Generar PDF">
                     </form>
                 <?php
                 }
@@ -116,32 +116,10 @@ and open the template in the editor.
                 
                 
             </section>
-            
-            <script type="text/javascript">
-                function demoFromHTML() {
-                        $("td:hidden,th:hidden","#customers").show();
-                    var pdf = new jsPDF('l', 'pt', 'a4');
-                     pdf.cellInitialize();
-                    pdf.setFontSize(10);
-                    $.each( $('#customers tr'), function (i, row){
-                        $.each( $(row).find("td, th"), function(j, cell){
-                             var txt = $(cell).text().trim().split(" ").join("\n") || " ";
-                             var width = (j==0) ? 70 : 45; //make with column smaller
-                             //var height = (i==0) ? 40 : 30;
-                             pdf.cell(10, 50, 100, 50, txt, i);
-                        });
-                    });
-                        pdf.save('Test.pdf');
-
-                }
-            </script>
+          
             <section class="contenido" id="contenidoGeneral2">                
                 <div class="listado">                                      
                  
-                   <?php $data = $client->get_comisiones_vendedores() ?> 
-                   <?php $inicio = isset($_POST['txbFechaInicio']) ? strtotime(str_replace("/","-",$_POST['txbFechaInicio'])) : '' ?> 
-                   <?php $fin = isset($_POST['txbFechaFin']) ? strtotime(str_replace("/","-",$_POST['txbFechaFin'])) : '' ?> 
-                   <?php $codigo = isset($_POST['codigo_vendedor']) ? $_POST['codigo_vendedor'] : '' ?>
 
                    <table id="customers">
                        <thead>
@@ -151,57 +129,27 @@ and open the template in the editor.
                            <th>Fecha generación del gasto</th>
                            <th>Valor del gasto</th>
                        </thead>
-                       <?php if ($_POST): ?>
-                           <?php $filas=0; ?>
-                           <?php $suma_gasto=0 ?>
-                       <?php foreach ($gastos as $key => $value): ?>
-
-                            <?php
-                                $dt = DateTime::createFromFormat('d/m/y', $value['GASTOFECHA']);
-                                $f1 = $dt->format('d-m-Y');
-                                $dt = DateTime::createFromFormat('d/m/y', $value['GASTOFECHA']);
-                                $f2 = $dt->format('d-m-Y');
-                                $strtotime1 = strtotime($f1);
-                                $strtotime2 = strtotime($f2);
-                            ?>
-                  
-                          
-                        
-                              
-                                
-                                 <tr>
-                                     <td><?php echo $value['GASTORECIB'] ?> </td>
-                                     <td><?php echo $value['GASTOCLIEN']." ".$value['CLIENNOMBR'] ?></td>
-
-                                     <td><?php echo $value['GASTOCONCE']." ".$value['CONCENOMBR'] ?></td>
-                                     <td><?php echo $value['GASTOFECHA'] ?></td>
-                                     <td><?php echo $value['GASTOVALOR'] ?></td>
-                                 </tr>
-                                 <?php $suma_gasto+=$value['GASTOVALOR'] ?>
-                                 <?php $filas++ ?>
-                      
-                        
+                
+                      <?php $filas=0; ?>
+                      <?php $suma_gasto=0 ?>
+                       <?php foreach ($gastos as $key => $value): ?> 
+                       <tr>
+                           <td><?php echo $value['GASTORECIB'] ?> </td>
+                           <td><?php echo $value['GASTOCLIEN']." ".$value['CLIENNOMBR'] ?></td>
+                           <td><?php echo $value['GASTOCONCE']." ".$value['CONCENOMBR'] ?></td>
+                           <td><?php echo $value['GASTOFECHA'] ?></td>
+                           <td><?php echo number_format($value['GASTOVALOR'],2) ?></td>
+                       </tr>
+                       <?php $suma_gasto+=$value['GASTOVALOR'] ?>
+                        <?php $filas++; ?>
                        <?php endforeach ?>
-                                  <tr>
-                                     <td colspan="3"></td>
-                                     <td> <b>TOTAL:</b> </td>
-                                     <td><b><?php echo $suma_gasto ?></b></td>
-                                 </tr>
-                        <?php else: ?>
-                       <?php $filas=0; ?>
-                       <?php foreach ($gastos as $key => $value): ?>
-                                
-                               <tr>
-                                   <td><?php echo $value['GASTORECIB'] ?> </td>
-                                   <td><?php echo $value['GASTOCLIEN']." ".$value['CLIENNOMBR'] ?></td>
-
-                                   <td><?php echo $value['GASTOCONCE']." ".$value['CONCENOMBR'] ?></td>
-                                   <td><?php echo $value['GASTOFECHA'] ?></td>
-                                   <td><?php echo $value['GASTOVALOR'] ?></td>
-                               </tr>
-                               <?php $filas++ ?>
-                       <?php endforeach ?>
-                       <?php endif ?>
+                       <?php if (isset($_POST['codigo_vendedor']) and !empty($_POST['codigo_vendedor'])): ?>
+                        <tr>
+                           <td colspan="3"></td>
+                           <td> <b>TOTAL:</b> </td>
+                           <td><b><?php echo number_format($suma_gasto,2) ?></b></td>
+                       </tr>
+                       <?php endif; ?>
                    <?php if ($filas == 0): ?>
                        <tr>
                            <td colspan="8">

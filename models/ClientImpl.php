@@ -29,29 +29,26 @@ class ClientImpl
 		 
 	}
     public function get_gastos(){
-        if (isset($_POST['codigo_vendedor'])) {
-            $where = " and gastoclien = ".$_POST['codigo_vendedor']." ";
-        }else{
-            $where = "  ";
-        }
-        $sql = "select 
-                gastorecib, 
-                gastoclien, 
-                cliennombr, 
-                gastoconce, 
-                concenombr, 
-                gastofecha, 
-                gastovalor
-            from 
-                gasto, 
-                cliente, 
-                concepto
-            where gastoclien = cliencodig
+        if (isset($_POST['codigo_vendedor']) and !empty($_POST['codigo_vendedor'])) {
+            $sql = "select gastorecib, gastoclien, cliennombr, gastoconce, concenombr, gastofecha, gastovalor
+                from gasto, cliente, concepto
+                where gastoclien = cliencodig
                 and gastoconce = concecodig
-                $where
-            order by gastofecha desc";
+                and gastofecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+                and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))."', 'dd/mm/yyyy hh24:mi:ss')
+                and gastoclien = '".$_POST['codigo_vendedor']."'
+                order by gastofecha desc";
+        }else{
+            $sql = "select gastorecib, gastoclien, cliennombr, gastoconce, concenombr, gastofecha, gastovalor
+                from gasto, cliente, concepto
+                where gastoclien = cliencodig
+                and gastoconce = concecodig
+                and gastofecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+                and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+                order by gastofecha desc";
+        }
 
-echo $sql;
+            //echo "<pre>".$sql."</pre>";
             $conex = Conexion::getInstancia();
             $stid = oci_parse($conex, $sql);
             oci_execute($stid);
@@ -59,6 +56,7 @@ echo $sql;
             while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
                 $foo[]=$row;
             }
+            //var_dump(count($foo));
             return $foo;        
     }
     public function get_clientes(){

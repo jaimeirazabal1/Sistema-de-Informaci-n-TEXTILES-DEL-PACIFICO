@@ -17,7 +17,16 @@ $(document).ready(function () {
         $('#formReporteAlgodon').attr('action', "../../controllers/ctrlPrintAlgodon.php");
         $('#formReporteAlgodon').attr('target', "_blank");
     });
-    
+
+    $("#btnConsultarGastos2").click(function () {
+        $('#formReporteGastos2').attr('action', "gastos.php");        
+        $('#formReporteGastos2').removeAttr('target');
+    });
+    $("#btnGenerarGastos2").click(function () {
+        $('#formReporteGastos2').attr('action', "../../controllers/ctrlPrintGastos.php");
+        $('#formReporteGastos2').attr('target', "_blank");
+    });
+        
     
     $("#btnConsultarRayas").click(function () {
         $('#formReporteRayas').attr('action', "rayas.php");        
