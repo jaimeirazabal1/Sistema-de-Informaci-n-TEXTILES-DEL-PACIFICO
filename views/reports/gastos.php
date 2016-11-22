@@ -123,11 +123,11 @@ and open the template in the editor.
 
                    <table id="customers">
                        <thead>
-                           <th>Código recibo</th>
-                           <th>Código y Nombre cliente</th>
-                           <th>Código y Nombre del concepto</th>
-                           <th>Fecha generación del gasto</th>
-                           <th>Valor del gasto</th>
+                           <th>CÓDIGO RECIBO</th>
+                           <th>CÓDIGO Y NOMBRE CLIENTE</th>
+                           <th>CÓDIGO Y NOMBRE CONCEPTO</th>
+                           <th>FECHA GENERACIÓN DEL GASTO</th>
+                           <th>VALOR DEL GASTO</th>
                        </thead>
                 
                       <?php $filas=0; ?>

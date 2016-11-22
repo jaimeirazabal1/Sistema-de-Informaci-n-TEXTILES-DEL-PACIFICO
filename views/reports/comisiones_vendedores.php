@@ -138,14 +138,14 @@ and open the template in the editor.
                 <div class="listado">                                      
                    <table id="table_to_pdf">
                        <thead>
-                           <th>Código vendedor</th>
-                           <th>Nombre vendedor</th>
-                           <th>Fecha generación del crédito</th>
-                           <th>Fecha cancelación del crédito</th>
-                           <th>Código remisión</th>
-                           <th>Nombre del cliente</th>
-                           <th>Valor del crédito</th>
-                           <th>Valor comisión</th>
+                           <th>CÓDIGO VENDEDOR</th>
+                           <th>NNOMBRE VENDEDOR</th>
+                           <th>FECHA GENERACIÓN DEL CRÉDITO</th>
+                           <th>FECHA CANCELACIÓN DEL CRÉDITO</th>
+                           <th>CÓDIGO REMISIÓN</th>
+                           <th>NOMBRE DEL CLIENTE</th>
+                           <th>VALOR DEL CRÉDITO</th>
+                           <th>VALOR COMISIÓN</th>
                        </thead>
                        <?php $comisiones = $client->get_comisiones_vendedores() ?>
                        <?php $credivalor = 0; ?>
