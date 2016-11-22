@@ -8,6 +8,9 @@ MODELOS
 /models/StockImpl.php
 /models/billImpl.php
 
+CONTROLADORES
+/controllers/ctrPrintArqueoDetallado.php
+
 VISTAS
 /views/reports/index.php
 \views\reports\kardex.php

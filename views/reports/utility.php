@@ -96,6 +96,7 @@ and open the template in the editor.
                 <div class="listado">                                        
                     
                             <?php
+                            $sumTotalInventario = 0;
                             if($_POST)
                             {
                                 $dateInicio = $_POST['txbFechaInicio'];

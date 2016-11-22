@@ -76,7 +76,7 @@ and open the template in the editor.
                         echo '<input id="txbFechaInicio" min="1979-12-31" max="2200-12-31" name="txbFechaInicio" type="date" placeholder="DESDE" required value="'.$_POST['txbFechaInicio'].'">'; 
                         echo '<input id="txbFechaFin" min="1979-12-31" max="2200-12-31" name="txbFechaFin" type="date" placeholder="HASTA" required value="'.$_POST['txbFechaFin'].'">';
                         echo '<input id="btnConsultarArqueo" type="submit" value="Consultar"><label> </label>';
-                        echo '<input id="btnGenerarArqueo" type="submit" value="Generar PDF">';                        
+                        echo '<input id="btnGenerarArqueoDetallado" type="submit" value="Generar PDF">';                        
                         ?>
                     </form>    
                 <?php
@@ -90,7 +90,7 @@ and open the template in the editor.
                         echo '<input id="txbFechaFin" min="1979-12-31" max="2200-12-31" name="txbFechaFin" type="date" placeholder="HASTA" required value="'.$dateNow.'">';
                         ?>
                         <input id="btnConsultarArqueo" type="submit" value="Consultar"><label> </label>
-                        <input id="btnGenerarArqueo" type="submit" value="Generar PDF">
+                        <input id="btnGenerarArqueoDetallado" type="submit" value="Generar PDF">
                     </form>
                 <?php
                 }
@@ -203,7 +203,6 @@ and open the template in the editor.
                                                         <td><?php echo $value['REMISFECGE'] ?></td>
                                                         <td><?php echo $value['REMISVALOR'] ?></td>
                                                         <td width="400px"><?php echo isset($value['REMISOBSER']) ? $value['REMISOBSER'] : ''  ?></td>
-                                                   
                                                     </tr>
                                                 <?php endforeach ?>
                                             <?php else: ?>

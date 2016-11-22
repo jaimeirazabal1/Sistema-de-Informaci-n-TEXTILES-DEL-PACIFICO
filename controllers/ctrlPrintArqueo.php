@@ -41,7 +41,9 @@ class PDF extends FPDF {
         $this->Cell(110, 6, utf8_decode('Fecha de Generación: '.date("Y/m/d H:i:s")), 0, 0, 'L');
         $this->Ln();
         $this->Cell(110, 6, '', 0, 0, 'L');                        
-                 
+        if (!isset($_POST['comboPayment'])) {
+           $_POST['comboPayment'] = "TODOS";
+        }
         if(strcmp($_POST['comboPayment'], "TODOS") == 0)
             $this->Cell(0, 6, utf8_decode('Forma de Pago: TODOS'), 0, 0, 'L');
         else if(strcmp($_POST['comboPayment'], "CONTADO") == 0)

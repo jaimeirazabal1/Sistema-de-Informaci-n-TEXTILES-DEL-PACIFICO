@@ -339,7 +339,7 @@ public function gastos(){
             $conex = Conexion::getInstancia();
             $stid = oci_parse($conex, $sql);
             oci_execute($stid);
-            $foo;
+            $foo = 0;
 
             while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {          
               $foo = $row[0];
@@ -356,7 +356,7 @@ public function gastos(){
             $conex = Conexion::getInstancia();
             $stid = oci_parse($conex, $sql);
             oci_execute($stid);
-            $foo;
+            $foo = 0;
 
             while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {          
               $foo = $row[0];
@@ -373,7 +373,7 @@ public function gastos(){
             $conex = Conexion::getInstancia();
             $stid = oci_parse($conex, $sql);
             oci_execute($stid);
-            $foo;
+            $foo = 0;
 
             while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {          
               $foo = $row[0];
@@ -391,7 +391,7 @@ public function gastos(){
             $conex = Conexion::getInstancia();
             $stid = oci_parse($conex, $sql);
             oci_execute($stid);
-            $foo;
+            $foo = 0;
 
             while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {          
               $foo = $row[0];
@@ -411,7 +411,7 @@ public function gastos(){
             $conex = Conexion::getInstancia();
             $stid = oci_parse($conex, $sql);
             oci_execute($stid);
-            $foo;
+            $foo = 0;
 
             while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {          
               $foo = $row[0];

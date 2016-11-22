@@ -148,7 +148,11 @@ $(document).ready(function () {
         $('#formReporteArqueo').attr('target', "_blank");
     });
     
-    
+    $("#btnGenerarArqueoDetallado").click(function () {
+        $('#formReporteArqueo').attr('action', "../../controllers/ctrlPrintArqueoDetallado.php");
+        $('#formReporteArqueo').attr('target', "_blank");
+    });
+        
     $("#btnConsultarEstadoCuenta").click(function () {
         $('#formReporteEstadoCuenta').attr('action', "state_account.php");        
         $('#formReporteEstadoCuenta').removeAttr('target');
