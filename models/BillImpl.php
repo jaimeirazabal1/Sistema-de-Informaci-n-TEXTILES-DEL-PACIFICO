@@ -30,18 +30,90 @@ class BillImpl
     public function getRecaudos(){
         if (isset($_POST['txbFechaInicio'])) {
           
-            $sql ="select recaucodig, recaucredi, crediclien, cliennombr, recauvalor, recaufecha, recauobser, recautipo from recaudo, credito, cliente where recaucredi = credicodig and crediclien = cliencodig and recaufecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))."' 00:00:00', 'dd/mm/yyyy hh24:mi:ss') and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))."' 23:59:59', 'dd/mm/yyyy hh24:mi:ss') order by recaufecha desc";
+            $sql ="select recaucodig, recaucredi, crediclien, cliennombr, recauvalor, recaufecha, recauobser, recautipo from recaudo, credito, cliente where recaucredi = credicodig and crediclien = cliencodig and recaufecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss') and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 23:59:59', 'dd/mm/yyyy hh24:mi:ss') order by recaufecha desc";
             $conex = Conexion::getInstancia();
             $stid = oci_parse($conex, $sql);
-            echo $sql.";";
+            //echo $sql.";";
             oci_execute($stid);
             $foo = array();
             while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
                 $foo[]=$row;
             }
+            /*echo "<pre>";
+            var_dump($foo[0]);
+            echo "</pre>";*/
             return $foo; 
         }
     }   
+    public function ventasContado(){
+        if (isset($_POST['txbFechaInicio'])) {
+            $sql = "SELECT remiscodig, remisclien, cliennombr, remisfecge, remisvalor, remisobser
+            from remision, cliente
+            where remisclien = cliencodig
+            and REMISFORPA = 'CO'
+            and remisfecge between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+            and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 23:59:59', 'dd/mm/yyyy hh24:mi:ss')
+            order by remisfecge desc";
+            $conex = Conexion::getInstancia();
+            $stid = oci_parse($conex, $sql);
+            //echo $sql.";";
+            oci_execute($stid);
+            $foo = array();
+            while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
+                $foo[]=$row;
+            }
+            /*echo "<pre>";
+            var_dump($foo[0]);
+            echo "</pre>";*/
+            return $foo; 
+        }
+    }
+    public function comprobantesDeEgreso(){
+        if (isset($_POST['txbFechaInicio'])) {
+            $sql = "SELECT CUEPAPAGCO, CUEPAPAGCP, CUEPAPAGVA, CUEPAPAGFG, CUEPAPAGOB, CUEPAPAGTI
+                FROM cuentpagpa
+                where CUEPAPAGFG between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+                and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 23:59:59', 'dd/mm/yyyy hh24:mi:ss')
+                order by CUEPAPAGFG desc";
+            $conex = Conexion::getInstancia();
+            $stid = oci_parse($conex, $sql);
+            //echo $sql.";";
+            oci_execute($stid);
+            $foo = array();
+            while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
+                $foo[]=$row;
+            }
+            /*echo "<pre>";
+            var_dump($foo[0]);
+            echo "</pre>";*/
+            return $foo; 
+        }
+    }
+
+public function gastos(){
+    if (isset($_POST['txbFechaInicio'])) {
+        $sql = "select gastorecib, gastoclien, cliennombr, gastoconce, concenombr, gastofecha, gastovalor
+            from gasto, cliente, concepto
+            where gastoclien = cliencodig
+            and gastoconce = concecodig
+            and gastofecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+            and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 23:59:59', 'dd/mm/yyyy hh24:mi:ss')
+            order by gastofecha desc";
+            $conex = Conexion::getInstancia();
+            $stid = oci_parse($conex, $sql);
+            //echo $sql.";";
+            oci_execute($stid);
+            $foo = array();
+            while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
+                $foo[]=$row;
+            }
+            /*echo "<pre>";
+            var_dump($foo[0]);
+            echo "</pre>";*/
+            return $foo; 
+    }
+}
+
         public function getAll()
 	{
             $sql = "SELECT fctr.FACTUCODIG, fctr.FACTUCLIEN, fctr.FACTUFECGE, fctr.FACTUVALOR, fctr.FACTUVALIV, fctr.FACTUUSUAR 

@@ -6,6 +6,7 @@
 MODELOS
 /models/ClientImpl.php
 /models/StockImpl.php
+/models/billImpl.php
 
 VISTAS
 /views/reports/index.php
