@@ -154,18 +154,26 @@ and open the template in the editor.
                                                 <th><?php echo strtoupper("Tipo Recaudo") ?></th>
                                             </thead>
                                             <?php $recaudos=$objBillImpl->getRecaudos(); ?>
-                                            <?php foreach ($recaudos as $key => $value): ?>
+                                            <?php if (count($recaudos)): ?>
+                                                <?php foreach ($recaudos as $key => $value): ?>
+                                                    <tr>
+                                                        <td><?php echo $value['RECAUCODIG'] ?></td>
+                                                        <td><?php echo $value['RECAUCREDI'] ?></td>
+                                                        <td><?php echo $value['CREDICLIEN'] ?></td>
+                                                        <td><?php echo $value['CLIENNOMBR'] ?></td>
+                                                        <td><?php echo $value['RECAUVALOR'] ?></td>
+                                                        <td ><?php echo $value['RECAUFECHA'] ?></td>
+                                                        <td width="300px"><p><?php echo isset($value['RECAUOBSER']) ? $value['RECAUOBSER'] : '' ?></p></td>
+                                                        <td><?php echo isset($value['RECAUTIPO']) ? $value['RECAUTIPO'] : '' ?></td>
+                                                    </tr>
+                                                <?php endforeach ?>
+                                                <?php else: ?>
                                                 <tr>
-                                                    <td><?php echo $value['RECAUCODIG'] ?></td>
-                                                    <td><?php echo $value['RECAUCREDI'] ?></td>
-                                                    <td><?php echo $value['CREDICLIEN'] ?></td>
-                                                    <td><?php echo $value['CLIENNOMBR'] ?></td>
-                                                    <td><?php echo $value['RECAUVALOR'] ?></td>
-                                                    <td ><?php echo $value['RECAUFECHA'] ?></td>
-                                                    <td width="300px"><p><?php echo isset($value['RECAUOBSER']) ? $value['RECAUOBSER'] : '' ?></p></td>
-                                                    <td><?php echo isset($value['RECAUTIPO']) ? $value['RECAUTIPO'] : '' ?></td>
+                                                    <td colspan="6">
+                                                        <center>No se encontraron registros</center>
+                                                    </td>
                                                 </tr>
-                                            <?php endforeach ?>
+                                            <?php endif; ?>
                                         </table>
                                    
                                 <?php                                
@@ -186,17 +194,25 @@ and open the template in the editor.
                                                 <th width="400px"><?php echo strtoupper("ObservaciÓn") ?></th>
                                             </thead>
                                             <?php $recaudos=$objBillImpl->ventasContado(); ?>
-                                            <?php foreach ($recaudos as $key => $value): ?>
+                                            <?php if (count($recaudos)): ?>
+                                                <?php foreach ($recaudos as $key => $value): ?>
+                                                    <tr>
+                                                        <td><?php echo $value['REMISCODIG'] ?></td>
+                                                        <td><?php echo $value['REMISCLIEN'] ?></td>
+                                                        <td><?php echo $value['CLIENNOMBR'] ?></td>
+                                                        <td><?php echo $value['REMISFECGE'] ?></td>
+                                                        <td><?php echo $value['REMISVALOR'] ?></td>
+                                                        <td width="400px"><?php echo isset($value['REMISOBSER']) ? $value['REMISOBSER'] : ''  ?></td>
+                                                   
+                                                    </tr>
+                                                <?php endforeach ?>
+                                            <?php else: ?>
                                                 <tr>
-                                                    <td><?php echo $value['REMISCODIG'] ?></td>
-                                                    <td><?php echo $value['REMISCLIEN'] ?></td>
-                                                    <td><?php echo $value['CLIENNOMBR'] ?></td>
-                                                    <td><?php echo $value['REMISFECGE'] ?></td>
-                                                    <td><?php echo $value['REMISVALOR'] ?></td>
-                                                    <td width="400px"><?php echo isset($value['REMISOBSER']) ? $value['REMISOBSER'] : ''  ?></td>
-                                               
+                                                    <td colspan="6">
+                                                        <center>No se encontraron registros</center>
+                                                    </td>
                                                 </tr>
-                                            <?php endforeach ?>
+                                            <?php endif; ?>
                                         </table>
                                     
                                 <?php 
