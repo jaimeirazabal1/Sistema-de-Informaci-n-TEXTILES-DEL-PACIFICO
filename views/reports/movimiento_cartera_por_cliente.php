@@ -66,7 +66,7 @@ and open the template in the editor.
                    <?php $client = new ClientImpl() ?>     
                    <?php $clientes = $client->get_clientes() ?> 
                    <?php $data = $client->movimiento_cartera_por_cliente() ?> 
-                 
+                 	
                 <?php
                 if($_POST)
                 {?>
@@ -118,7 +118,12 @@ and open the template in the editor.
             </section>
           
             <section class="contenido" id="contenidoGeneral2">                
-                <div class="listado">                                      
+                <div class="listado">            
+                <?php if (isset($_POST['codigo_cliente'])): ?>
+                              <?php $cliente = $client->get_cliente_by_id($_POST['codigo_cliente']) ?>  
+                            
+                              <?php echo $cliente[0]['CLIENCODIG']."-".$cliente[0]['CLIENNOMBR'] ?>          	
+                <?php endif ?>                          
                   <table class="table">
                   	<thead>
                   		<th>DOCUMENTO ' NÚMERO DEL DOCUMENTO</th>
@@ -135,7 +140,7 @@ and open the template in the editor.
 	                  		<tr>
 	                  			<?php $saldo += $value['DEBITO']  ?>
 	                  			<?php $debito += $value['DEBITO']  ?>
-	                  			<td><?php echo "REM".$value['REMISCODIG'] ?></td>
+	                  			<td><?php echo "REM-".$value['REMISCODIG'] ?></td>
 	                  			<td><?php echo $value['FECHA'] ?></td>
 	                  			<td><?php echo number_format($value['DEBITO'],2) ?></td>
 	                  			<td><?php echo "0,00" ?></td>
@@ -146,7 +151,7 @@ and open the template in the editor.
                   			<?php $saldo -= $value['CREDITO']  ?>
                   			<?php $credito += $value['CREDITO']  ?>
 	                  		<tr>
-	                  			<td><?php echo "CXP-".$value['RECAUCODIG'] ?></td>
+	                  			<td><?php echo "RC-".$value['RECAUCODIG'] ?></td>
 	                  			<td><?php echo $value['FECHA'] ?></td>
 	                  			<td><?php echo "0,00" ?></td>
 	                  			<td><?php echo number_format($value['CREDITO'],2) ?></td>

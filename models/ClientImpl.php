@@ -92,9 +92,9 @@ class ClientImpl
                 $foo3 = array_merge($foo,$foo2);
                 /*echo "<pre>";
                 //print_r($foo);
-                print_r($foo3);
+                print_r($foo3);*/
                 usort($foo3, "sortFunction");
-                echo "</pre>";*/
+                //echo "</pre>";
                 return $foo3;
             }
         }
@@ -129,6 +129,17 @@ class ClientImpl
             }
             //var_dump(count($foo));
             return $foo;        
+    }
+    public function get_cliente_by_id($id){
+        $sql = "select * from cliente where CLIENCODIG = '$id'";
+            $conex = Conexion::getInstancia();
+            $stid = oci_parse($conex, $sql);
+            oci_execute($stid);
+            $foo = array();
+            while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
+                $foo[]=$row;
+            }
+            return $foo;         
     }
     public function get_clientes(){
         $sql = "select * from cliente order by CLIENCODIG asc";
