@@ -17,6 +17,7 @@ VISTAS
 \views\reports\comisiones_vendedores.php
 /views/reports/stock.php
 /views/reports/arqueocaja.php
+/views/reportes/movimiento_cartera_por_cliente.php
 
 PDF
 \controllers\ctrlPrintKardex.php

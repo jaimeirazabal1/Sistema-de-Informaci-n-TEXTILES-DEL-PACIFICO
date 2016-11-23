@@ -20,6 +20,9 @@ if (file_exists("../models/Conexion.php")) {
     include_once("../../models/Conexion.php");    
     require_once('../../models/Client.php');
 }
+function sortFunction( $a, $b ) {
+    return strtotime($a["FECHA"]) - strtotime($b["FECHA"]);
+}
 
 class ClientImpl
 {
@@ -28,6 +31,74 @@ class ClientImpl
 	{
 		 
 	}
+    public function movimiento_cartera_por_cliente(){
+        if (isset($_POST['txbFechaFin'])) {
+            if (isset($_POST['codigo_cliente']) and !empty($_POST['codigo_cliente'])) {
+                $sql = "select 
+                            remiscodig, 
+                            remisfecge as fecha, 
+                            remisvalor 
+                            DEBITO 
+                                from 
+                            remision where remisfecge between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss') and 
+                            to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 23:59:59', 'dd/mm/yyyy hh24:mi:ss') 
+                            and remisclien = '".$_POST['codigo_cliente']."' order by remiscodig";
+
+                $sql2 = "select 
+                            recaucodig, 
+                            recaufecha as fecha, 
+                            recauvalor 
+                            CREDITO
+                                from 
+                            recaudo, credito where 
+                            recaucredi = credicodig and recaufecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 23:59:59', 'dd/mm/yyyy hh24:mi:ss') and
+                             crediclien = '".$_POST['codigo_cliente']."' order by recaucodig";
+                /*echo "<pre>";
+                echo $sql;
+                echo $sql2;
+                echo "</pre>";*/
+                $conex = Conexion::getInstancia();
+                $stid = oci_parse($conex, $sql);
+               
+              /*
+      (
+            [0] => -28
+            [REMISCODIG] => -28
+            [1] => 05-MAR-2016 00:00:00
+            [FECHA] => 05-MAR-2016 00:00:00
+            [2] => 7838450
+            [DEBITO] => 7838450
+        )
+               [0] => 76
+            [RECAUCODIG] => 76
+            [1] => 23-MAY-2016 15:09:11
+            [FECHA] => 23-MAY-2016 15:09:11
+            [2] => 3000000
+            [CREDITO] => 3000000
+              */
+                oci_execute($stid);
+                
+          
+                $foo = array();
+                while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
+                    $foo[]=$row;
+                }
+                 $stid2 = oci_parse($conex, $sql2);
+                oci_execute($stid2);
+               $foo2 = array();
+                while (($row = oci_fetch_array($stid2, OCI_BOTH)) != false) {            
+                    $foo2[]=$row;
+                }
+                $foo3 = array_merge($foo,$foo2);
+                /*echo "<pre>";
+                //print_r($foo);
+                print_r($foo3);
+                usort($foo3, "sortFunction");
+                echo "</pre>";*/
+                return $foo3;
+            }
+        }
+    }
     public function get_gastos(){
         if (isset($_POST['codigo_vendedor']) and !empty($_POST['codigo_vendedor'])) {
             $sql = "select gastorecib, gastoclien, cliennombr, gastoconce, concenombr, gastofecha, gastovalor

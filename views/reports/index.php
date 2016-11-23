@@ -132,10 +132,16 @@ and open the template in the editor.
                                 <td>ARQUEO CAJA</td>
                                 <td id="tdAcciones"><a href="arqueocaja.php"><img src="../../res/line-16.png"></a></td>
                             </tr>
+
                             <tr>
                                 <td>CONTABLE</td>
                                 <td>ARQUEO CAJA DETALLADO</td>
                                 <td id="tdAcciones"><a href="arqueocajaDetalle.php"><img src="../../res/line-16.png"></a></td>
+                            </tr>
+                            <tr>
+                                <td>CONTABLE</td>
+                                <td>MOVIMIENTO CARTERA X CLIENTE</td>
+                                <td id="tdAcciones"><a href="movimiento_cartera_por_cliente.php"><img src="../../res/line-16.png"></a></td>
                             </tr>
                             <tr>
                                 <td>REMISIONES</td>
