@@ -70,7 +70,7 @@ and open the template in the editor.
                 <?php
                 if($_POST)
                 {?>
-                    <form action="" method="post" id="formReporteGastos2">
+                    <form action="" method="post" id="formMovimientoCarteraCliente">
                         <?php 
                         echo '<input id="txbFechaInicio"  name="txbFechaInicio" type="date" placeholder="DESDE"  value="'.$_POST['txbFechaInicio'].'">'; 
                         echo '<input id="txbFechaFin" name="txbFechaFin" type="date" placeholder="HASTA"  value="'.$_POST['txbFechaFin'].'">';                        
@@ -93,7 +93,7 @@ and open the template in the editor.
                 }
                 else
                 {?>
-                    <form action="" method="post" id="formReporteGastos2">
+                    <form action="" method="post" id="formMovimientoCarteraCliente">
                         <?php 
                         $dateNow = date("d/m/Y");
                         echo '<input id="txbFechaInicio" name="txbFechaInicio" type="date" placeholder="DESDE"  value="'.$dateNow.'">'; 
@@ -118,15 +118,31 @@ and open the template in the editor.
             </section>
           
             <section class="contenido" id="contenidoGeneral2">                
-                <div class="listado">            
+                <div class="listado">   
+                <?php $saldo = 0;
+                 $debito = 0;
+                 $credito = 0; ?>    
+                <?php foreach ($data as $key => $value): ?>
+                        <?php if (isset($value['DEBITO'])): ?>
+                            <?php $saldo += $value['DEBITO']  ?>
+                            <?php $debito += $value['DEBITO']  ?>
+                        <?php else: ?>
+                          <?php $saldo -= $value['CREDITO']  ?>
+                          <?php $credito += $value['CREDITO']  ?>
+                        <?php endif ?>
+                      <?php endforeach ?>   
                 <?php if (isset($_POST['codigo_cliente'])): ?>
-                              <?php $cliente = $client->get_cliente_by_id($_POST['codigo_cliente']) ?>  
-                            
-                              <?php echo $cliente[0]['CLIENCODIG']."-".$cliente[0]['CLIENNOMBR'] ?>          	
+                <?php $cliente = $client->get_cliente_by_id($_POST['codigo_cliente']) ?>  
+              
+                <?php echo "<div style='font-size:12px'><b >CÓDIGO DEL CLIENTE:</b> ".$cliente[0]['CLIENCODIG']." 
+                <br> 
+                <b >NOMBRE DEL CLIENTE:</b> ".$cliente[0]['CLIENNOMBR']." 
+                <br> 
+                <b >SALDO INICIAL DE CARTERA DEL CLIENTE:</b> ".number_format($debito-$credito,2)."</div><br>" ?>          	
                 <?php endif ?>                          
                   <table class="table">
                   	<thead>
-                  		<th>DOCUMENTO ' NÚMERO DEL DOCUMENTO</th>
+                  		<th>DOCUMENTO-NÚMERO DEL DOCUMENTO</th>
                   		<th>FECHA GENERACIÓN DOCUMENTO</th>
                   		<th>VALOR DÉBITO</th>
                   		<th>VALOR CRÉDITO</th>
@@ -135,30 +151,33 @@ and open the template in the editor.
                   	<?php $saldo = 0; ?>
                   	<?php $debito = 0; ?>
                   	<?php $credito = 0; ?>
-                  	<?php foreach ($data as $key => $value): ?>
-                  		<?php if (isset($value['DEBITO'])): ?>
-	                  		<tr>
-	                  			<?php $saldo += $value['DEBITO']  ?>
-	                  			<?php $debito += $value['DEBITO']  ?>
-	                  			<td><?php echo "REM-".$value['REMISCODIG'] ?></td>
-	                  			<td><?php echo $value['FECHA'] ?></td>
-	                  			<td><?php echo number_format($value['DEBITO'],2) ?></td>
-	                  			<td><?php echo "0,00" ?></td>
-	                  			<td><?php echo number_format($saldo,2) ?></td>
-	                  		</tr>
-                  			
-                  		<?php else: ?>
-                  			<?php $saldo -= $value['CREDITO']  ?>
-                  			<?php $credito += $value['CREDITO']  ?>
-	                  		<tr>
-	                  			<td><?php echo "RC-".$value['RECAUCODIG'] ?></td>
-	                  			<td><?php echo $value['FECHA'] ?></td>
-	                  			<td><?php echo "0,00" ?></td>
-	                  			<td><?php echo number_format($value['CREDITO'],2) ?></td>
-	                  			<td><?php echo number_format($saldo,2) ?></td>
-	                  		</tr>
-                  		<?php endif ?>
-                  	<?php endforeach ?>
+                    <?php if ($data): ?>
+                      
+                    	<?php foreach ($data as $key => $value): ?>
+                    		<?php if (isset($value['DEBITO'])): ?>
+  	                  		<tr>
+  	                  			<?php $saldo += $value['DEBITO']  ?>
+  	                  			<?php $debito += $value['DEBITO']  ?>
+  	                  			<td><?php echo "REM-".$value['REMISCODIG'] ?></td>
+  	                  			<td><?php echo $value['FECHA'] ?></td>
+  	                  			<td><?php echo number_format($value['DEBITO'],2) ?></td>
+  	                  			<td><?php echo "0,00" ?></td>
+  	                  			<td><?php echo number_format($saldo,2) ?></td>
+  	                  		</tr>
+                    			
+                    		<?php else: ?>
+                    			<?php $saldo -= $value['CREDITO']  ?>
+                    			<?php $credito += $value['CREDITO']  ?>
+  	                  		<tr>
+  	                  			<td><?php echo "RC-".$value['RECAUCODIG'] ?></td>
+  	                  			<td><?php echo $value['FECHA'] ?></td>
+  	                  			<td><?php echo "0,00" ?></td>
+  	                  			<td><?php echo number_format($value['CREDITO'],2) ?></td>
+  	                  			<td><?php echo number_format($saldo,2) ?></td>
+  	                  		</tr>
+                    		<?php endif ?>
+                    	<?php endforeach ?>
+                    <?php endif ?>
                   	<tr>
                   		<td></td>
                   		<td></td>

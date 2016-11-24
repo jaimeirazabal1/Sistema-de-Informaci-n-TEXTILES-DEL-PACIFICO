@@ -27,7 +27,10 @@ $(document).ready(function () {
         $('#formReporteGastos2').attr('action', "../../controllers/ctrlPrintGastos.php");
         $('#formReporteGastos2').attr('target', "_blank");
     });
-        
+    $("#btnGenerarPdfMovimientoCarteraCliente").click(function () {
+        $('#formMovimientoCarteraCliente').attr('action', "../../controllers/ctrlPrintMovimientoCarteraCliente.php");
+        $('#formMovimientoCarteraCliente').attr('target', "_blank");
+    });        
     
     $("#btnConsultarRayas").click(function () {
         $('#formReporteRayas').attr('action', "rayas.php");        
