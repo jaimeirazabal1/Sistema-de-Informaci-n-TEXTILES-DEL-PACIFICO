@@ -26,7 +26,13 @@ and open the template in the editor.
         <script src="../../js/alertify/alertify.js"></script>
         <link href="../../css/alertify/alertify.css" rel="stylesheet">
         <link href="../../css/alertify/themes/default.css" rel="stylesheet">
-        <title>Arqueo de Caja Detallado</title>
+        <script type="text/javascript" src="../../js/DataTables-1.10.12/media/js/jquery.dataTables.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+
+                });
+        </script>
+        <title>Arqueo de Caja - Detalle</title>
     </head>
     <body>
         <section class="contenedor">
@@ -70,7 +76,7 @@ and open the template in the editor.
                         echo '<input id="txbFechaInicio" min="1979-12-31" max="2200-12-31" name="txbFechaInicio" type="date" placeholder="DESDE" required value="'.$_POST['txbFechaInicio'].'">'; 
                         echo '<input id="txbFechaFin" min="1979-12-31" max="2200-12-31" name="txbFechaFin" type="date" placeholder="HASTA" required value="'.$_POST['txbFechaFin'].'">';
                         echo '<input id="btnConsultarArqueo" type="submit" value="Consultar"><label> </label>';
-                        echo '<input id="btnGenerarArqueo" type="submit" value="Generar PDF">';                        
+                        echo '<input id="btnGenerarArqueoDetallado" type="submit" value="Generar PDF">';                        
                         ?>
                     </form>    
                 <?php
@@ -84,7 +90,7 @@ and open the template in the editor.
                         echo '<input id="txbFechaFin" min="1979-12-31" max="2200-12-31" name="txbFechaFin" type="date" placeholder="HASTA" required value="'.$dateNow.'">';
                         ?>
                         <input id="btnConsultarArqueo" type="submit" value="Consultar"><label> </label>
-                        <input id="btnGenerarArqueo" type="submit" value="Generar PDF">
+                        <input id="btnGenerarArqueoDetallado" type="submit" value="Generar PDF">
                     </form>
                 <?php
                 }
@@ -110,7 +116,7 @@ and open the template in the editor.
                                 $sumTotalContado = $objBillImpl->getSumPaymentCO($_POST['txbFechaInicio'], $_POST['txbFechaFin'], 'CO');
                                 $sumTotalCredito = $objBillImpl->getSumPaymentCR($_POST['txbFechaInicio'], $_POST['txbFechaFin'], 'CR');
                                 $sumSaldoCxP = $objBillImpl->getSumSaldoCxP($_POST['txbFechaInicio'], $_POST['txbFechaFin']);
-								$sumTotalGastos = $objBillImpl->getSumGastos($_POST['txbFechaInicio'], $_POST['txbFechaFin']);
+                                $sumTotalGastos = $objBillImpl->getSumGastos($_POST['txbFechaInicio'], $_POST['txbFechaFin']);
 
                                 $sumTotalIngresos = $sumTotalRecaudos + $sumTotalContado;
                                 $sumTotalEgresos = $sumSaldoCxP + $sumTotalGastos;
@@ -126,30 +132,168 @@ and open the template in the editor.
                                         <th>INGRESOS</th>
                                         <th>EGRESOS</th>                                        
                                     </tr>
-                            
+                                </table>
                                 <?php
                                 
-                                echo '<tr>
+                                echo '<table><tr>
                                         <td>RECAUDOS</td>
                                         <td class="tdDerecha">'.number_format($sumTotalRecaudos,0).'</td>
                                         <td></td>
-                                    </tr>';                                
-                                echo '<tr>
+                                    </tr></table>';
+                                ?>
+                                
+                                        <table class="datatable">
+                                            <thead>
+                                                <th><?php echo strtoupper("CÓdigo de Recaudo") ?></th>
+                                                <th><?php echo strtoupper("CÓdigo de CrÉdito") ?></th>
+                                                <th><?php echo strtoupper("IdentificaciÓn del cliente") ?></th>
+                                                <th><?php echo strtoupper("Nombre del Cliente") ?></th>
+                                                <th><?php echo strtoupper("Valor Recaudo") ?></th>
+                                                <th ><?php echo strtoupper("Fecha Recaudo") ?></th>
+                                                <th width="300px"><?php echo strtoupper("ObservaciÓn") ?></th>
+                                                <th><?php echo strtoupper("Tipo Recaudo") ?></th>
+                                            </thead>
+                                            <?php $recaudos=$objBillImpl->getRecaudos(); ?>
+                                            <?php if (count($recaudos)): ?>
+                                                <?php foreach ($recaudos as $key => $value): ?>
+                                                    <tr>
+                                                        <td><?php echo $value['RECAUCODIG'] ?></td>
+                                                        <td><?php echo $value['RECAUCREDI'] ?></td>
+                                                        <td><?php echo $value['CREDICLIEN'] ?></td>
+                                                        <td><?php echo $value['CLIENNOMBR'] ?></td>
+                                                        <td><?php echo $value['RECAUVALOR'] ?></td>
+                                                        <td ><?php echo $value['RECAUFECHA'] ?></td>
+                                                        <td width="300px"><p><?php echo isset($value['RECAUOBSER']) ? $value['RECAUOBSER'] : '' ?></p></td>
+                                                        <td><?php echo isset($value['RECAUTIPO']) ? $value['RECAUTIPO'] : '' ?></td>
+                                                    </tr>
+                                                <?php endforeach ?>
+                                                <?php else: ?>
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <center>No se encontraron registros</center>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </table>
+                                   
+                                <?php                                
+                                echo '<table><tr>
                                         <td>VENTAS CONTADO</td>
                                         <td class="tdDerecha">'.number_format($sumTotalContado,0).'</td>
                                         <td></td>
-                                    </tr>';
-                                echo '<tr>
+                                    </tr></table>';
+                                ?>
+                             
+                                        <table class="datatable">
+                                            <thead>
+                                                <th><?php echo strtoupper("CÓdigo de RemisiÓn") ?></th>
+                                                <th><?php echo strtoupper("IdentificaciÓn del cliente") ?></th>
+                                                <th><?php echo strtoupper("Nombre del cliente") ?></th>
+                                                <th><?php echo strtoupper("Fecha de RemisiÓn") ?></th>
+                                                <th><?php echo strtoupper("Valor de RemisiÓn") ?></th>
+                                                <th width="400px"><?php echo strtoupper("ObservaciÓn") ?></th>
+                                            </thead>
+                                            <?php $recaudos=$objBillImpl->ventasContado(); ?>
+                                            <?php if (count($recaudos)): ?>
+                                                <?php foreach ($recaudos as $key => $value): ?>
+                                                    <tr>
+                                                        <td><?php echo $value['REMISCODIG'] ?></td>
+                                                        <td><?php echo $value['REMISCLIEN'] ?></td>
+                                                        <td><?php echo $value['CLIENNOMBR'] ?></td>
+                                                        <td><?php echo $value['REMISFECGE'] ?></td>
+                                                        <td><?php echo $value['REMISVALOR'] ?></td>
+                                                        <td width="400px"><?php echo isset($value['REMISOBSER']) ? $value['REMISOBSER'] : ''  ?></td>
+                                                    </tr>
+                                                <?php endforeach ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <center>No se encontraron registros</center>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </table>
+                                    
+                                <?php 
+                                echo '<table><tr>
                                         <td>COMPROBANTES EGRESO</td>
                                         <td></td>
                                         <td class="tdDerecha">'.number_format($sumSaldoCxP,0).'</td>
-                                    </tr>';
-                                echo '<tr>
+                                    </tr></table>';
+                                ?>
+                             
+                                        <table class="datatable">
+                                            <thead>
+                                                <th>CÓDIGO PAGO</th>
+                                                <th>CÓDIGO CUENTA POR PAGAR</th>
+                                                <th>VALOR PAGO</th>
+                                                <th>FECHA DE GENERACIÓN</th>
+                                                <th width="400px">OBSERVACIÓN</th>
+                                                <th> TIPO DE PAGO</th>
+                                            </thead>
+                                            <?php $recaudos=$objBillImpl->comprobantesDeEgreso(); ?>
+                                            <?php if (count($recaudos)): ?>
+                                                
+                                                <?php foreach ($recaudos as $key => $value): ?>
+                                                    <tr>
+                                                        <td><?php echo $value['CUEPAPAGCO'] ?></td>
+                                                        <td><?php echo $value['CUEPAPAGCP'] ?></td>
+                                                        <td><?php echo $value['CUEPAPAGVA'] ?></td>
+                                                        <td><?php echo $value['CUEPAPAGFG'] ?></td>
+                                                        <td><?php echo $value['CUEPAPAGOB'] ?></td>
+                                                        <td><?php echo  $value['CUEPAPAGTI']  ?></td>
+                                                   
+                                                    </tr>
+                                                <?php endforeach ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="6"> <center>No se encontraron registros</center> </td>
+                                                </tr>
+                                            <?php endif ?>
+                                        </table>
+                                    
+                                <?php 
+                                echo '<table><tr>
                                         <td>GASTOS</td>
                                         <td></td>
                                         <td class="tdDerecha">'.number_format($sumTotalGastos,0).'</td>
-                                    </tr>';
-                                echo '<tr>
+                                    </tr></table>';
+                                ?>
+                             
+                                        <table class="datatable">
+                                            <thead>
+                                                <th>CÓDIGO RECIBO</th>
+                                                <th>CÓDIGO CLIENTE</th>
+                                                <th>NOMBRE CLIENTE</th>
+                                                <th>CÓDIGO DEL CONCEPTO</th>
+                                                <th>NOMBRE DEL CONCEPTO</th>
+                                                <th>FECHA GENERACIÓN DEL GASTO</th>
+                                                <th>VALOR DEL GASTO</th>
+                                            </thead>
+                                            <?php $recaudos=$objBillImpl->gastos(); ?>
+                                            <?php if (count($recaudos)): ?>
+                                                
+                                                <?php foreach ($recaudos as $key => $value): ?>
+                                                    <tr>
+                                                        <td><?php echo $value['GASTORECIB'] ?></td>
+                                                        <td><?php echo $value['GASTOCLIEN'] ?></td>
+                                                        <td><?php echo $value['CLIENNOMBR'] ?></td>
+                                                        <td><?php echo $value['GASTOCONCE'] ?></td>
+                                                        <td><?php echo $value['CONCENOMBR'] ?></td>
+                                                        <td><?php echo  $value['GASTOFECHA']  ?></td>
+                                                        <td><?php echo  $value['GASTOVALOR']  ?></td>
+                                                   
+                                                    </tr>
+                                                <?php endforeach ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="6"> <center>No se encontraron registros</center> </td>
+                                                </tr>
+                                            <?php endif ?>
+                                        </table>
+                                    
+                                <?php 
+                                echo '<table><tr>
                                         <td>SUBTOTALES</td>
                                         <td class="tdDerecha">'.number_format($sumTotalIngresos,0).'</td>
                                         <td class="tdDerecha">'.number_format($sumTotalEgresos,0).'</td>
@@ -188,7 +332,7 @@ and open the template in the editor.
                         var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
 
                         var barChartData = {
-                                labels : ["Inventario","Facturación"],
+                                labels : ["Inventario","FacturaciÓn"],
                                 datasets : [
                                         {
                                                 fillColor : "rgba(151,187,205,0.5)",

@@ -10,6 +10,9 @@ MODELOS
 
 CONTROLADORES
 /controllers/ctrPrintArqueoDetallado.php
+/controllers/ctrPrintArqueo.php
+/controllers/ctrlPrintComisiones.php
+controllers/ctrlPrintKardex.php
 
 VISTAS
 /views/reports/index.php
@@ -17,6 +20,7 @@ VISTAS
 \views\reports\comisiones_vendedores.php
 /views/reports/stock.php
 /views/reports/arqueocaja.php
+/views/reports/arqueocajaDetalle.php
 /views/reportes/movimiento_cartera_por_cliente.php
 
 PDF

@@ -31,15 +31,21 @@ and open the template in the editor.
         $(document).ready(function(){
 
             $("#btnGenerarInventarioExcel").click(function(){
-              $("#tabla").table2excel({
-                exclude: ".noExl",
-                    name: "Excel Document Name",
-                    filename: "myFileName",
-                    fileext: ".xls",
-                    exclude_img: true,
-                    exclude_links: true,
-                    exclude_inputs: true
-              }); 
+                var nombreArchivo = prompt('Ingrese el nombre del archivo');
+                if (confirm('No se introdujo ningun nombre para el archivo, desea imprimirlo con el nombre de Reporte de Inventario?')) {
+
+                  $("#tabla").table2excel({
+                    exclude: ".noExl",
+                        name: nombreArchivo,
+                        filename: nombreArchivo ? nombreArchivo: 'Reporte de Inventario',
+                        fileext: ".xls",
+                        exclude_img: true,
+                        exclude_links: true,
+                        exclude_inputs: true
+                  }); 
+                }else{
+                    
+                }
             });
         })
         </script>

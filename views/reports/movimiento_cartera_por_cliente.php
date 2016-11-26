@@ -61,6 +61,9 @@ and open the template in the editor.
             </nav>
             
             <section class="contenido" id="contenidoGeneral2">
+            <br>
+            <br>
+            <br>
                 <h1>MOVIMIENTO CARTERA X CLIENTE</h1>
                     <?php require_once("../../models/ClientImpl.php") ?>    
                    <?php $client = new ClientImpl() ?>     
@@ -75,14 +78,14 @@ and open the template in the editor.
                         echo '<input id="txbFechaInicio"  name="txbFechaInicio" type="date" placeholder="DESDE"  value="'.$_POST['txbFechaInicio'].'">'; 
                         echo '<input id="txbFechaFin" name="txbFechaFin" type="date" placeholder="HASTA"  value="'.$_POST['txbFechaFin'].'">';                        
                         ?> 
-                        <select name="codigo_cliente" id="" >
+                        <select name="codigo_cliente" id="" required>
                             <option value="">Seleccione</option>
                             <?php foreach ($clientes as $key => $value): ?>
                                 <?php if ($_POST['codigo_cliente'] == $value['CLIENCODIG']): ?>
-                                <option value="<?php echo $value['CLIENCODIG'] ?>" selected><?php echo $value['CLIENNOMBR'] ?></option>
+                                <option value="<?php echo $value['CLIENCODIG'] ?>" selected><?php echo $value['CLIENCODIG'] ?> - <?php echo $value['CLIENNOMBR'] ?></option>
 
                                 <?php else: ?>
-                                <option value="<?php echo $value['CLIENCODIG'] ?>"><?php echo $value['CLIENNOMBR'] ?></option>
+                                <option value="<?php echo $value['CLIENCODIG'] ?>"><?php echo $value['CLIENCODIG'] ?> - <?php echo $value['CLIENNOMBR'] ?></option>
                                 <?php endif ?>
                             <?php endforeach ?>
                         </select>                        
@@ -95,15 +98,15 @@ and open the template in the editor.
                 {?>
                     <form action="" method="post" id="formMovimientoCarteraCliente">
                         <?php 
-                        $dateNow = date("d/m/Y");
+                        $dateNow = date("Y-m-d");
                         echo '<input id="txbFechaInicio" name="txbFechaInicio" type="date" placeholder="DESDE"  value="'.$dateNow.'">'; 
                         echo '<input id="txbFechaFin"  name="txbFechaFin" type="date" placeholder="HASTA"  value="'.$dateNow.'">';
                         
                         ?>                
-                        <select name="codigo_cliente" id="" >
+                        <select name="codigo_cliente" id="" required>
                             <option value="">Seleccione</option>
                             <?php foreach ($clientes as $key => $value): ?>
-                                <option value="<?php echo $value['CLIENCODIG'] ?>"><?php echo $value['CLIENNOMBR'] ?></option>
+                                <option value="<?php echo $value['CLIENCODIG'] ?>"><?php echo $value['CLIENCODIG'] ?> - <?php echo $value['CLIENNOMBR'] ?></option>
                             <?php endforeach ?>
                         </select>        
                         <input id="btnConsultaMovimientoCarteraCliente" type="submit" value="Consultar">
@@ -160,9 +163,9 @@ and open the template in the editor.
   	                  			<?php $debito += $value['DEBITO']  ?>
   	                  			<td><?php echo "REM-".$value['REMISCODIG'] ?></td>
   	                  			<td><?php echo $value['FECHA'] ?></td>
-  	                  			<td><?php echo number_format($value['DEBITO'],2) ?></td>
-  	                  			<td><?php echo "0,00" ?></td>
-  	                  			<td><?php echo number_format($saldo,2) ?></td>
+  	                  			<td style="text-align: right;"><?php echo number_format($value['DEBITO'],2) ?></td>
+  	                  			<td style="text-align: right;"><?php echo "0,00" ?></td>
+  	                  			<td style="text-align: right;"><?php echo number_format($saldo,2) ?></td>
   	                  		</tr>
                     			
                     		<?php else: ?>
@@ -171,9 +174,9 @@ and open the template in the editor.
   	                  		<tr>
   	                  			<td><?php echo "RC-".$value['RECAUCODIG'] ?></td>
   	                  			<td><?php echo $value['FECHA'] ?></td>
-  	                  			<td><?php echo "0,00" ?></td>
-  	                  			<td><?php echo number_format($value['CREDITO'],2) ?></td>
-  	                  			<td><?php echo number_format($saldo,2) ?></td>
+  	                  			<td style="text-align: right;"><?php echo "0,00" ?></td>
+  	                  			<td style="text-align: right;"><?php echo number_format($value['CREDITO'],2) ?></td>
+  	                  			<td style="text-align: right;"><?php echo number_format($saldo,2) ?></td>
   	                  		</tr>
                     		<?php endif ?>
                     	<?php endforeach ?>
@@ -181,9 +184,9 @@ and open the template in the editor.
                   	<tr>
                   		<td></td>
                   		<td></td>
-                  		<td><b><?php echo number_format($debito,2) ?></b></td>
-                  		<td><b><?php echo number_format($credito,2) ?></b></td>
-                  		<td><b><?php echo number_format($debito-$credito,2) ?></b></td>
+                  		<td style="text-align: right;"><b><?php echo number_format($debito,2) ?></b></td>
+                  		<td style="text-align: right;"><b><?php echo number_format($credito,2) ?></b></td>
+                  		<td style="text-align: right;"><b><?php echo number_format($debito-$credito,2) ?></b></td>
                   	</tr>
                   </table>
                 </div>

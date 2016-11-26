@@ -124,18 +124,18 @@ class PDF extends FPDF {
         $this->SetTextColor(48,131,155);
         $this->Cell(0, 5, 'Saldos: '.number_format($sumSaldos,0), 1, 0, 'C');    
         
-        if($sumTotalInventario >0 && $sumSubTotal > 0)
-        {
-            $this->Ln(18);
-            $data = array('Inventario' => $sumTotalInventario, 'Remisiones' => $sumSubTotal);
-            $this->SetFont('Times', 'B', 12);
-            $this->Cell(0, 5, 'Inventario VS Facturacion', 0, 1);
-            $this->Ln(8);
-            $valX = $this->GetX();
-            $valY = $this->GetY();
-            $this->BarDiagram(190, 70, $data, '%l : %v (%p)', array(255, 175, 100));
-            $this->SetXY($valX, $valY + 80);
-        }
+        // if($sumTotalInventario >0 && $sumSubTotal > 0)
+        // {
+        //     $this->Ln(18);
+        //     $data = array('Inventario' => $sumTotalInventario, 'Remisiones' => $sumSubTotal);
+        //     $this->SetFont('Times', 'B', 12);
+        //     $this->Cell(0, 5, 'Inventario VS Facturacion', 0, 1);
+        //     $this->Ln(8);
+        //     $valX = $this->GetX();
+        //     $valY = $this->GetY();
+        //     $this->BarDiagram(190, 70, $data, '%l : %v (%p)', array(255, 175, 100));
+        //     $this->SetXY($valX, $valY + 80);
+        // }
     }
     
     function BarDiagram($w, $h, $data, $format, $color=null, $maxVal=0, $nbDiv=4)

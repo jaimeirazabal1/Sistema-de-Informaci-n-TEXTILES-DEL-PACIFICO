@@ -110,9 +110,9 @@ class PDF extends FPDF {
         
             $this->Cell(25, 5, $valorStock['DOCUMENTO'], 0, 0, 'L');
             $this->Cell(25, 5, $valorStock['FECHA'], 0, 0, 'R');
-            $this->Cell(25, 5, $valorStock['ENTRADA'], 0, 0, 'R');
-            $this->Cell(25, 5, $valorStock['SALIDA'], 0, 0, 'R');
-            $this->Cell(25, 5, $valorStock['SALDO KGS'], 0, 0, 'R');
+            $this->Cell(25, 5, number_format($valorStock['ENTRADA'],2), 0, 0, 'R');
+            $this->Cell(25, 5, number_format($valorStock['SALIDA'],2), 0, 0, 'R');
+            $this->Cell(25, 5, number_format($valorStock['SALDO KGS'],2), 0, 0, 'R');
             $this->Cell(25, 5, $valorStock['COSTO UNITARIO'], 0, 0, 'R');
             $this->Cell(25, 5, $valorStock['COSTO ENTRADA'], 0, 0, 'R');
             $this->Cell(25, 5, $valorStock['COSTO SALIDA'], 0, 0, 'R');
@@ -124,13 +124,13 @@ class PDF extends FPDF {
         $this->Ln(5); 
         $this->Cell(25, 5, '', 0);
         $this->Cell(25, 5, '', 0);
-        $this->Cell(25, 5, $data[1]['totalEntradas'], 0, 0, 'R');
-        $this->Cell(25, 5, $data[1]['totalSalidas'], 0, 0, 'R');
-        $this->Cell(25, 5, $data[1]['totalEntradas']-$data[1]['totalSalidas'], 0, 0, 'R');
+        $this->Cell(25, 5, number_format($data[1]['totalEntradas'],2), 0, 0, 'R');
+        $this->Cell(25, 5, number_format($data[1]['totalSalidas'],2), 0, 0, 'R');
+        $this->Cell(25, 5, number_format($data[1]['totalEntradas']-$data[1]['totalSalidas'],2), 0, 0, 'R');
         $this->Cell(25, 5, '', 0, 0, 'R');
-        $this->Cell(25, 5, $data[1]['totalCostoEntradas'], 0, 0, 'R');
-        $this->Cell(25, 5, $data[1]['totalCostoSalidas'], 0, 0, 'R');
-        $this->Cell(25, 5, $data[1]['totalCostoEntradas']-$data[1]['totalCostoSalidas'], 0, 0, 'R');
+        $this->Cell(25, 5, number_format($data[1]['totalCostoEntradas'],2), 0, 0, 'R');
+        $this->Cell(25, 5, number_format($data[1]['totalCostoSalidas'],2), 0, 0, 'R');
+        $this->Cell(25, 5, number_format($data[1]['totalCostoEntradas']-$data[1]['totalCostoSalidas'],2), 0, 0, 'R');
         $this->Ln(5); 
 
     }

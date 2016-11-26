@@ -18,7 +18,10 @@ $(document).ready(function () {
         $('#formReporteAlgodon').attr('action', "../../controllers/ctrlPrintAlgodon.php");
         $('#formReporteAlgodon').attr('target', "_blank");
     });
-
+    $("#btnConsultarPDF").click(function () {
+        $('#comisiones_vendedores').attr('action', "../../controllers/ctrlPrintComisiones.php");        
+        $('#comisiones_vendedores').attr('target',"_blank");
+    });
     $("#btnConsultarGastos2").click(function () {
         $('#formReporteGastos2').attr('action', "gastos.php");        
         $('#formReporteGastos2').removeAttr('target');

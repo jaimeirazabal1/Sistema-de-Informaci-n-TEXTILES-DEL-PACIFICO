@@ -61,6 +61,9 @@ and open the template in the editor.
             </nav>
             
             <section class="contenido" id="contenidoGeneral2">
+            <br>
+            <br>
+            <br>
                 <h1>GASTOS</h1>
                     <?php require_once("../../models/ClientImpl.php") ?>    
                    <?php $client = new ClientImpl() ?>     
@@ -79,10 +82,10 @@ and open the template in the editor.
                             <option value="">Seleccione</option>
                             <?php foreach ($clientes as $key => $value): ?>
                                 <?php if ($_POST['codigo_vendedor'] == $value['CLIENCODIG']): ?>
-                                <option value="<?php echo $value['CLIENCODIG'] ?>" selected><?php echo $value['CLIENNOMBR'] ?></option>
+                                <option value="<?php echo $value['CLIENCODIG'] ?>" selected><?php echo $value['CLIENCODIG'] ?> - <?php echo $value['CLIENNOMBR'] ?></option>
 
                                 <?php else: ?>
-                                <option value="<?php echo $value['CLIENCODIG'] ?>"><?php echo $value['CLIENNOMBR'] ?></option>
+                                <option value="<?php echo $value['CLIENCODIG'] ?>"><?php echo $value['CLIENCODIG'] ?> - <?php echo $value['CLIENNOMBR'] ?></option>
                                 <?php endif ?>
                             <?php endforeach ?>
                         </select>                        
@@ -95,7 +98,7 @@ and open the template in the editor.
                 {?>
                     <form action="" method="post" id="formReporteGastos2">
                         <?php 
-                        $dateNow = date("d/m/Y");
+                        $dateNow = date("Y-m-d");
                         echo '<input id="txbFechaInicio" name="txbFechaInicio" type="date" placeholder="DESDE"  value="'.$dateNow.'">'; 
                         echo '<input id="txbFechaFin"  name="txbFechaFin" type="date" placeholder="HASTA"  value="'.$dateNow.'">';
                         
@@ -103,7 +106,7 @@ and open the template in the editor.
                         <select name="codigo_vendedor" id="" >
                             <option value="">Seleccione</option>
                             <?php foreach ($clientes as $key => $value): ?>
-                                <option value="<?php echo $value['CLIENCODIG'] ?>"><?php echo $value['CLIENNOMBR'] ?></option>
+                                <option value="<?php echo $value['CLIENCODIG'] ?>"><?php echo $value['CLIENCODIG'] ?> - <?php echo $value['CLIENNOMBR'] ?></option>
                             <?php endforeach ?>
                         </select>        
                         <input id="btnConsultarGastos2" type="submit" value="Consultar">
@@ -138,27 +141,16 @@ and open the template in the editor.
                            <td><?php echo $value['GASTOCLIEN']." ".$value['CLIENNOMBR'] ?></td>
                            <td><?php echo $value['GASTOCONCE']." ".$value['CONCENOMBR'] ?></td>
                            <td><?php echo $value['GASTOFECHA'] ?></td>
-                           <td><?php echo number_format($value['GASTOVALOR'],2) ?></td>
+                           <td><center><?php echo number_format($value['GASTOVALOR'],2) ?></center></td>
                        </tr>
                        <?php $suma_gasto+=$value['GASTOVALOR'] ?>
                         <?php $filas++; ?>
                        <?php endforeach ?>
-                       <?php if (isset($_POST['codigo_vendedor']) and !empty($_POST['codigo_vendedor'])): ?>
                         <tr>
                            <td colspan="3"></td>
                            <td> <b>TOTAL:</b> </td>
-                           <td><b><?php echo number_format($suma_gasto,2) ?></b></td>
+                           <td><b><center><?php echo number_format($suma_gasto,2) ?></center></b></td>
                        </tr>
-                       <?php endif; ?>
-                   <?php if ($filas == 0): ?>
-                       <tr>
-                           <td colspan="8">
-                               <center>
-                                   <h2>La búsqueda no arrojó ningún resultado</h2>
-                               </center>
-                           </td>
-                       </tr>
-                   <?php endif ?>
                    </table>
                              
                          

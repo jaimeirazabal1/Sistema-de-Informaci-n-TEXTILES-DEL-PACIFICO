@@ -61,6 +61,8 @@ and open the template in the editor.
             </nav>
             
             <section class="contenido" id="contenidoGeneral2">
+            <br>
+            <br>
                 <h1>COMISIONES VENDEDORES</h1>
                    <?php require_once("../../models/ClientImpl.php") ?>    
                    <?php $client = new ClientImpl() ?>     
@@ -69,7 +71,7 @@ and open the template in the editor.
                 <?php
                 if($_POST)
                 {?>
-                    <form id="" action="" method="post">
+                    <form id="comisiones_vendedores" action="" method="post">
                         <?php 
                         echo '<input id="txbFechaInicio"  name="txbFechaInicio" type="date" placeholder="DESDE" required value="'.$_POST['txbFechaInicio'].'">'; 
                         echo '<input id="txbFechaFin" name="txbFechaFin" type="date" placeholder="HASTA" required value="'.$_POST['txbFechaFin'].'">';                        
@@ -78,21 +80,21 @@ and open the template in the editor.
                             <option value="">Seleccione</option>
                             <?php foreach ($vendedores as $key => $value): ?>
                                 <?php if ($_POST['codigo_vendedor'] == $value['VENTCCODIG']): ?>
-                                <option value="<?php echo $value['VENTCCODIG'] ?>" selected><?php echo $value['VENTCNOMBR'] ?></option>
+                                <option value="<?php echo $value['VENTCCODIG'] ?>" selected><?php echo $value['VENTCCODIG'] ?> - <?php echo $value['VENTCNOMBR'] ?></option>
 
                                 <?php else: ?>
-                                <option value="<?php echo $value['VENTCCODIG'] ?>"><?php echo $value['VENTCNOMBR'] ?></option>
+                                <option value="<?php echo $value['VENTCCODIG'] ?>"><?php echo $value['VENTCCODIG'] ?> - <?php echo $value['VENTCNOMBR'] ?></option>
                                 <?php endif ?>
                             <?php endforeach ?>
                         </select>                        
                         <input id="btnConsultarSeller" type="submit" value="Consultar">
-                        <input id="" type="button" onClick="demoFromHTML()" value="Generar PDF">
+                        <input id="btnConsultarPDF" type="submit"  value="Generar PDF">
                     </form>    
                 <?php
                 }
                 else
                 {?>
-                    <form id="" action="" method="post">
+                    <form id="comisiones_vendedores" action="" method="post">
                         <?php 
                         $dateNow = date("Y-m-d");
                         echo '<input id="txbFechaInicio" name="txbFechaInicio" type="date" placeholder="DESDE" required value="'.$dateNow.'">'; 
@@ -102,44 +104,24 @@ and open the template in the editor.
                         <select name="codigo_vendedor" id="">
                             <option value="">Seleccione</option>
                             <?php foreach ($vendedores as $key => $value): ?>
-                                <option value="<?php echo $value['VENTCCODIG'] ?>"><?php echo $value['VENTCNOMBR'] ?></option>
+                                <option value="<?php echo $value['VENTCCODIG'] ?>"><?php echo $value['VENTCCODIG'] ?> - <?php echo $value['VENTCNOMBR'] ?></option>
                             <?php endforeach ?>
                         </select>        
                         <input id="btnConsultarSeller" type="submit" value="Consultar">
-                        <input id="" type="button" onClick="demoFromHTML()" value="Generar PDF">
+                        <input id="btnConsultarPDF" type="submit"  value="Generar PDF">
                     </form>
                 <?php
                 }
                 ?>
                 
-                
-                
             </section>
-            
-            <script type="text/javascript">
-                function demoFromHTML() {
-                        $("td:hidden,th:hidden","#table_to_pdf").show();
-                    var pdf = new jsPDF('l', 'pt', 'a4');
-                     pdf.cellInitialize();
-                    pdf.setFontSize(10);
-                    $.each( $('#table_to_pdf tr'), function (i, row){
-                        $.each( $(row).find("td, th"), function(j, cell){
-                             var txt = $(cell).text().trim().split(" ").join("\n") || " ";
-                             var width = (j==0) ? 70 : 45; //make with column smaller
-                             //var height = (i==0) ? 40 : 30;
-                             pdf.cell(10, 50, 100, 50, txt, i);
-                        });
-                    });
-                        pdf.save('Test.pdf');
-
-                }
-            </script>
+      
             <section class="contenido" id="contenidoGeneral2">                
                 <div class="listado">                                      
                    <table id="table_to_pdf">
                        <thead>
                            <th>CÓDIGO VENDEDOR</th>
-                           <th>NNOMBRE VENDEDOR</th>
+                           <th>NOMBRE VENDEDOR</th>
                            <th>FECHA GENERACIÓN DEL CRÉDITO</th>
                            <th>FECHA CANCELACIÓN DEL CRÉDITO</th>
                            <th>CÓDIGO REMISIÓN</th>
@@ -158,8 +140,8 @@ and open the template in the editor.
                           <td><?php echo $value["CREDIFECCA"] ?></td>
                           <td><?php echo $value["VENDEFACTU"] ?></td>
                           <td><?php echo $value["CLIENNOMBR"] ?></td>
-                          <td><?php echo $value["CREDIVALOR"] ?></td>
-                          <td><?php echo $value["COMISION"] ?></td>
+                          <td><?php echo number_format($value["CREDIVALOR"],2) ?></td>
+                          <td><?php echo number_format($value["COMISION"],2) ?></td>
                         </tr>
                         <?php 
                           $credivalor+=$value["CREDIVALOR"];
