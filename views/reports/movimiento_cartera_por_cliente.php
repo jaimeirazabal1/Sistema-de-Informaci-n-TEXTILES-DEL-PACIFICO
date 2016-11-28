@@ -73,7 +73,7 @@ and open the template in the editor.
                 <?php
                 if($_POST)
                 {?>
-                    <form action="" method="post" id="formMovimientoCarteraCliente">
+                    <form action="" method="post" class="formMovimientoCarteraCliente">
                         <?php 
                         echo '<input id="txbFechaInicio"  name="txbFechaInicio" type="date" placeholder="DESDE"  value="'.$_POST['txbFechaInicio'].'">'; 
                         echo '<input id="txbFechaFin" name="txbFechaFin" type="date" placeholder="HASTA"  value="'.$_POST['txbFechaFin'].'">';                        
@@ -96,7 +96,7 @@ and open the template in the editor.
                 }
                 else
                 {?>
-                    <form action="" method="post" id="formMovimientoCarteraCliente">
+                    <form action="" method="post" class="formMovimientoCarteraCliente">
                         <?php 
                         $dateNow = date("Y-m-d");
                         echo '<input id="txbFechaInicio" name="txbFechaInicio" type="date" placeholder="DESDE"  value="'.$dateNow.'">'; 
@@ -124,24 +124,34 @@ and open the template in the editor.
                 <div class="listado">   
                 <?php $saldo = 0;
                  $debito = 0;
-                 $credito = 0; ?>    
-                <?php foreach ($data as $key => $value): ?>
-                        <?php if (isset($value['DEBITO'])): ?>
-                            <?php $saldo += $value['DEBITO']  ?>
-                            <?php $debito += $value['DEBITO']  ?>
-                        <?php else: ?>
-                          <?php $saldo -= $value['CREDITO']  ?>
-                          <?php $credito += $value['CREDITO']  ?>
-                        <?php endif ?>
-                      <?php endforeach ?>   
+                 $credito = 0; ?>
+                 <?php if ($data): ?>
+                   
+                  <?php foreach ($data as $key => $value): ?>
+                          <?php if (isset($value['DEBITO'])): ?>
+                              <?php $saldo += $value['DEBITO']  ?>
+                              <?php $debito += $value['DEBITO']  ?>
+                          <?php else: ?>
+                            <?php $saldo -= $value['CREDITO']  ?>
+                            <?php $credito += $value['CREDITO']  ?>
+                          <?php endif ?>
+                        <?php endforeach ?>   
+                 <?php endif ?>
                 <?php if (isset($_POST['codigo_cliente'])): ?>
                 <?php $cliente = $client->get_cliente_by_id($_POST['codigo_cliente']) ?>  
-              
-                <?php echo "<div style='font-size:12px'><b >CÓDIGO DEL CLIENTE:</b> ".$cliente[0]['CLIENCODIG']." 
-                <br> 
-                <b >NOMBRE DEL CLIENTE:</b> ".$cliente[0]['CLIENNOMBR']." 
-                <br> 
-                <b >SALDO INICIAL DE CARTERA DEL CLIENTE:</b> ".number_format($debito-$credito,2)."</div><br>" ?>          	
+                <table>
+                  <thead>
+                    <th>CÓDIGO DEL CLIENTE</th>
+                    <th>NOMBRE DEL CLIENTE</th>
+                    <th>SALDO INICIAL DE CARTERA DEL CLIENTE</th>
+                  </thead>
+                  <tr>
+                    <td style="text-align: center"><?php echo $cliente[0]['CLIENCODIG'] ?></td>
+                    <td style="text-align: center"><?php echo $cliente[0]['CLIENNOMBR'] ?></td>
+                    <td style="text-align: center"><?php echo number_format($debito-$credito,2) ?></td>
+                  </tr>
+                </table>
+                      	
                 <?php endif ?>                          
                   <table class="table">
                   	<thead>

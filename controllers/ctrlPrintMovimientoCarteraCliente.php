@@ -130,12 +130,18 @@ class PDF extends PDF_MC_Table {
         $this->Ln(15);
         $this->SetFont('Times', 'B', 12);
 
-        //$this->Cell(110);
+        $this->Cell(100);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(0, 6, 'MOVIMIENTO CARTERA X CLIENTE', 1, 0, 'C');
+        
+        $this->Cell(110, 6, '', 0, 0, 'L'); 
 
-        $this->SetFont('Times', '', 9);
-        $this->Ln();
+ $this->SetFont('Times', 'B', 8);
+        $this->Ln();                       
+        $this->Cell(250, 6, utf8_decode('Fecha de Generación: '.date("Y/m/d H:i:s")), 0, 0, 'C');   
+ $this->Ln();
+ $this->SetY(37);
+    $this->Cell(110, 6, utf8_decode('Desde: '.$_POST['txbFechaInicio'].'    Hasta: '.$_POST['txbFechaFin']), 0, 1, 'L');
         require_once("../models/ClientImpl.php"); 
         $client = new ClientImpl();  
         $data = $client->movimiento_cartera_por_cliente();
@@ -151,21 +157,33 @@ class PDF extends PDF_MC_Table {
                  $credito += $value['CREDITO']; 
              }
         }
-        
-        $this->Cell(110, 6, utf8_decode('Desde: '.$_POST['txbFechaInicio'].'    Hasta: '.$_POST['txbFechaFin']), 0, 1, 'L');
-        
         $cliente = new ClientImpl();
         $cliente_ = $cliente->get_cliente_by_id($_POST['codigo_cliente']);
-        $this->SetY(38);
-        $this->Cell(0, 6, utf8_decode('CÓDIGO CLIENTE: '.$cliente_[0]['CLIENCODIG']), 0, 1, 'R');
-        $this->Cell(0, 6, utf8_decode('NOMBRE CLIENTE: '.$cliente_[0]['CLIENNOMBR']), 0, 1, 'R');
-        $this->Cell(0, 6, utf8_decode('SALDO INICIAL DE CARTERA DEL CLIENTE: '.number_format($debito-$credito,2)), 0, 0, 'R');
+        $this->Ln();
+$this->SetTextColor(48,131,155);
+$this->SetWidths(array(60,60,70));
+$this->SetAligns(array('C','C','C'));
+$this->SetFont('Times', 'B', 8);
+$this->Row(array(
+    utf8_decode('CÓDIGO DEL CLIENTE'),
+    utf8_decode('NOMBRE DEL CLIENTE'),
+    utf8_decode('SALDO INICIAL DE CARTERA DEL CLIENTE')
+)); 
+$this->SetTextColor(102,102,102);
+$this->Row(array(
+    utf8_decode($cliente_[0]['CLIENCODIG']),
+    utf8_decode($cliente_[0]['CLIENNOMBR']),
+    utf8_decode(number_format($debito-$credito,2))
+));        
+     
+  
+        // $this->SetY(38);
+        // $this->Cell(0, 6, utf8_decode('CÓDIGO CLIENTE: '.$cliente_[0]['CLIENCODIG']), 0, 1, 'R');
+        // $this->Cell(0, 6, utf8_decode('NOMBRE CLIENTE: '.$cliente_[0]['CLIENNOMBR']), 0, 1, 'R');
+        // $this->Cell(0, 6, utf8_decode('SALDO INICIAL DE CARTERA DEL CLIENTE: '.number_format($debito-$credito,2)), 0, 0, 'R');
        
 
-        $this->Ln();
-        $this->Cell(110, 6, '', 0, 0, 'L');                        
-        $this->Cell(0, 6, utf8_decode('Fecha de Generación: '.date("Y/m/d H:i:s")), 0, 0, 'R');   
-        $this->Ln(10);
+       
     }
 
 //    Pie de página
@@ -222,7 +240,7 @@ $data = $client->movimiento_cartera_por_cliente();
 $pdf->AliasNbPages();
 //Primera página
 $pdf->AddPage();
-$pdf->SetY(65);
+$pdf->SetY(70);
 $pdf->SetTextColor(48,131,155);
 $pdf->SetWidths(array(50,50,30,30,30));
 $pdf->SetAligns(array('C','C','C','C','C'));

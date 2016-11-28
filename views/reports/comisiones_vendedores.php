@@ -71,7 +71,7 @@ and open the template in the editor.
                 <?php
                 if($_POST)
                 {?>
-                    <form id="comisiones_vendedores" action="" method="post">
+                    <form class="comisiones_vendedores" action="" method="post">
                         <?php 
                         echo '<input id="txbFechaInicio"  name="txbFechaInicio" type="date" placeholder="DESDE" required value="'.$_POST['txbFechaInicio'].'">'; 
                         echo '<input id="txbFechaFin" name="txbFechaFin" type="date" placeholder="HASTA" required value="'.$_POST['txbFechaFin'].'">';                        
@@ -87,14 +87,14 @@ and open the template in the editor.
                                 <?php endif ?>
                             <?php endforeach ?>
                         </select>                        
-                        <input id="btnConsultarSeller" type="submit" value="Consultar">
+                        <input id="btnConsultarComisiones" type="submit" value="Consultar">
                         <input id="btnConsultarPDF" type="submit"  value="Generar PDF">
                     </form>    
                 <?php
                 }
                 else
                 {?>
-                    <form id="comisiones_vendedores" action="" method="post">
+                    <form class="comisiones_vendedores" action="" method="post">
                         <?php 
                         $dateNow = date("Y-m-d");
                         echo '<input id="txbFechaInicio" name="txbFechaInicio" type="date" placeholder="DESDE" required value="'.$dateNow.'">'; 
@@ -107,7 +107,7 @@ and open the template in the editor.
                                 <option value="<?php echo $value['VENTCCODIG'] ?>"><?php echo $value['VENTCCODIG'] ?> - <?php echo $value['VENTCNOMBR'] ?></option>
                             <?php endforeach ?>
                         </select>        
-                        <input id="btnConsultarSeller" type="submit" value="Consultar">
+                        <input id="btnConsultarComisiones" type="submit" value="Consultar">
                         <input id="btnConsultarPDF" type="submit"  value="Generar PDF">
                     </form>
                 <?php
@@ -140,8 +140,8 @@ and open the template in the editor.
                           <td><?php echo $value["CREDIFECCA"] ?></td>
                           <td><?php echo $value["VENDEFACTU"] ?></td>
                           <td><?php echo $value["CLIENNOMBR"] ?></td>
-                          <td><?php echo number_format($value["CREDIVALOR"],2) ?></td>
-                          <td><?php echo number_format($value["COMISION"],2) ?></td>
+                          <td style="text-align: right;"><?php echo number_format($value["CREDIVALOR"],2) ?></td>
+                          <td style="text-align: right;"><?php echo number_format($value["COMISION"],2) ?></td>
                         </tr>
                         <?php 
                           $credivalor+=$value["CREDIVALOR"];
@@ -151,9 +151,9 @@ and open the template in the editor.
                       <?php if (isset($_POST['codigo_vendedor']) and !empty($_POST['codigo_vendedor'])): ?>
                         <tr>
                           <td colspan="5"></td>
-                          <td><b>Total:</b></td>
-                          <td><b><?php echo $credivalor ?></b></td>
-                          <td><b><?php echo $comision ?></b></td>
+                          <td style="text-align: right;"><b>Total:</b></td>
+                          <td style="text-align: right;"><b><?php echo number_format($credivalor,2) ?></b></td>
+                          <td style="text-align: right;"><b><?php echo number_format($comision,2) ?></b></td>
                         </tr>
                       <?php endif ?>
                    </table>

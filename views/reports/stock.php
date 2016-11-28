@@ -32,8 +32,7 @@ and open the template in the editor.
 
             $("#btnGenerarInventarioExcel").click(function(){
                 var nombreArchivo = prompt('Ingrese el nombre del archivo');
-                if (confirm('No se introdujo ningun nombre para el archivo, desea imprimirlo con el nombre de Reporte de Inventario?')) {
-
+                if (nombreArchivo) {
                   $("#tabla").table2excel({
                     exclude: ".noExl",
                         name: nombreArchivo,
@@ -43,8 +42,22 @@ and open the template in the editor.
                         exclude_links: true,
                         exclude_inputs: true
                   }); 
+
                 }else{
                     
+                    if (confirm('No se introdujo ningun nombre para el archivo, desea imprimirlo con el nombre de Reporte de Inventario?')) {
+                          $("#tabla").table2excel({
+                            exclude: ".noExl",
+                                name: nombreArchivo,
+                                filename: nombreArchivo ? nombreArchivo: 'Reporte de Inventario',
+                                fileext: ".xls",
+                                exclude_img: true,
+                                exclude_links: true,
+                                exclude_inputs: true
+                          }); 
+                    }else{
+                        
+                    }
                 }
             });
         })

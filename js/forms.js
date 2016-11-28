@@ -19,8 +19,12 @@ $(document).ready(function () {
         $('#formReporteAlgodon').attr('target', "_blank");
     });
     $("#btnConsultarPDF").click(function () {
-        $('#comisiones_vendedores').attr('action', "../../controllers/ctrlPrintComisiones.php");        
-        $('#comisiones_vendedores').attr('target',"_blank");
+        $('.comisiones_vendedores').attr('action', "../../controllers/ctrlPrintComisiones.php");        
+        $('.comisiones_vendedores').attr('target',"_blank");
+    });
+    $("#btnConsultarComisiones").click(function () {
+        $('.comisiones_vendedores').attr('action', "comisiones_vendedores.php");        
+        $('.comisiones_vendedores').removeAttr('target');;
     });
     $("#btnConsultarGastos2").click(function () {
         $('#formReporteGastos2').attr('action', "gastos.php");        
@@ -31,10 +35,13 @@ $(document).ready(function () {
         $('#formReporteGastos2').attr('target', "_blank");
     });
     $("#btnGenerarPdfMovimientoCarteraCliente").click(function () {
-        $('#formMovimientoCarteraCliente').attr('action', "../../controllers/ctrlPrintMovimientoCarteraCliente.php");
-        $('#formMovimientoCarteraCliente').attr('target', "_blank");
+        $('.formMovimientoCarteraCliente').attr('action', "../../controllers/ctrlPrintMovimientoCarteraCliente.php");
+        $('.formMovimientoCarteraCliente').attr('target', "_blank");
     });        
-    
+    $("#btnConsultaMovimientoCarteraCliente").click(function(){
+        $('.formMovimientoCarteraCliente').attr('action', "movimiento_cartera_por_cliente.php");
+        $('.formMovimientoCarteraCliente').removeAttr('target');
+    });
     $("#btnConsultarRayas").click(function () {
         $('#formReporteRayas').attr('action', "rayas.php");        
         $('#formReporteRayas').removeAttr('target');

@@ -119,20 +119,20 @@ class PDF extends PDF_MC_Table {
         // Movernos a la derecha
         $this->Cell(110);
         // Título
-        $this->Cell(0, 0, 'Calle 20 No. 1 - 25', 0, 0, 'R');
+        $this->Cell(0, 0, 'Calle 20 No. 1 - 25', 0, 0, 'C');
         // Salto de línea
         $this->Ln(6);
         $this->Cell(110);
         $this->SetFont('Times', '', 10);
-        $this->Cell(0, 0, 'Santiago de Cali - Valle del Cauca', 0, 0, 'R');
-
-        $this->Cell(0, 10, 'Tel: XXX XX XX', 0, 0, 'R');
+        $this->Cell(0, 0, 'Santiago de Cali - Valle del Cauca', 0, 1, 'C');
+        $this->Cell(110);
+        $this->Cell(0, 10, 'Tel: XXX XX XX', 0, 0, 'C');
         $this->Ln(15);
         $this->SetFont('Times', 'B', 12);
 
-        //$this->Cell(110);
+        $this->Cell(110);
         $this->SetFont('Times', 'B', 12);
-        $this->Cell(0, 6, 'COMISIONES VENDEDORES', 1, 0, 'C');
+        $this->Cell(0, 6, 'COMISIONES VENDEDORES', 1, 1, 'C');
 
         $this->SetFont('Times', '', 9);
         $this->Ln();
@@ -151,7 +151,7 @@ class PDF extends PDF_MC_Table {
         //          $credito += $value['CREDITO']; 
         //      }
         // }
-        
+        $this->SetY(36);
         $this->Cell(110, 6, utf8_decode('Desde: '.$_POST['txbFechaInicio'].'    Hasta: '.$_POST['txbFechaFin']), 0, 1, 'L');
         
         // $cliente = new ClientImpl();
