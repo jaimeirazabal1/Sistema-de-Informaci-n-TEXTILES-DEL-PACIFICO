@@ -61,9 +61,7 @@ and open the template in the editor.
             </nav>
             
             <section class="contenido" id="contenidoGeneral2">
-            <br>
-            <br>
-                <h1>COMISIONES VENDEDORES</h1>
+                           <h1>COMISIONES VENDEDORES</h1>
                    <?php require_once("../../models/ClientImpl.php") ?>    
                    <?php $client = new ClientImpl() ?>     
                    <?php $vendedores = $client->get_vededores() ?>
@@ -132,22 +130,25 @@ and open the template in the editor.
                        <?php $comisiones = $client->get_comisiones_vendedores() ?>
                        <?php $credivalor = 0; ?>
                        <?php $comision = 0; ?>
-                      <?php foreach ($comisiones as $key => $value): ?>
-                        <tr>
-                          <td><?php echo $value["VENDECODIG"] ?></td>
-                          <td><?php echo $value["VENTCNOMBR"] ?></td>
-                          <td><?php echo $value["VENDEFECGE"] ?></td>
-                          <td><?php echo $value["CREDIFECCA"] ?></td>
-                          <td><?php echo $value["VENDEFACTU"] ?></td>
-                          <td><?php echo $value["CLIENNOMBR"] ?></td>
-                          <td style="text-align: right;"><?php echo number_format($value["CREDIVALOR"],2) ?></td>
-                          <td style="text-align: right;"><?php echo number_format($value["COMISION"],2) ?></td>
-                        </tr>
-                        <?php 
-                          $credivalor+=$value["CREDIVALOR"];
-                          $comision+=$value["COMISION"];
-                         ?>
-                      <?php endforeach ?>
+                       <?php if ($comisiones): ?>
+                         
+                        <?php foreach ($comisiones as $key => $value): ?>
+                          <tr>
+                            <td><?php echo $value["VENDECODIG"] ?></td>
+                            <td><?php echo $value["VENTCNOMBR"] ?></td>
+                            <td><?php echo $value["VENDEFECGE"] ?></td>
+                            <td><?php echo $value["CREDIFECCA"] ?></td>
+                            <td><?php echo $value["VENDEFACTU"] ?></td>
+                            <td><?php echo $value["CLIENNOMBR"] ?></td>
+                            <td style="text-align: right;"><?php echo number_format($value["CREDIVALOR"],2) ?></td>
+                            <td style="text-align: right;"><?php echo number_format($value["COMISION"],2) ?></td>
+                          </tr>
+                          <?php 
+                            $credivalor+=$value["CREDIVALOR"];
+                            $comision+=$value["COMISION"];
+                           ?>
+                        <?php endforeach ?>
+                       <?php endif ?>
                       <?php if (isset($_POST['codigo_vendedor']) and !empty($_POST['codigo_vendedor'])): ?>
                         <tr>
                           <td colspan="5"></td>

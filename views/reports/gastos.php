@@ -61,9 +61,7 @@ and open the template in the editor.
             </nav>
             
             <section class="contenido" id="contenidoGeneral2">
-            <br>
-            <br>
-            <br>
+           
                 <h1>GASTOS</h1>
                     <?php require_once("../../models/ClientImpl.php") ?>    
                    <?php $client = new ClientImpl() ?>     
@@ -135,21 +133,24 @@ and open the template in the editor.
                 
                       <?php $filas=0; ?>
                       <?php $suma_gasto=0 ?>
-                       <?php foreach ($gastos as $key => $value): ?> 
-                       <tr>
-                           <td><?php echo $value['GASTORECIB'] ?> </td>
-                           <td><?php echo $value['GASTOCLIEN']." ".$value['CLIENNOMBR'] ?></td>
-                           <td><?php echo $value['GASTOCONCE']." ".$value['CONCENOMBR'] ?></td>
-                           <td><?php echo $value['GASTOFECHA'] ?></td>
-                           <td><center><?php echo number_format($value['GASTOVALOR'],2) ?></center></td>
-                       </tr>
-                       <?php $suma_gasto+=$value['GASTOVALOR'] ?>
-                        <?php $filas++; ?>
-                       <?php endforeach ?>
+                      <?php if ($gastos): ?>
+                          
+                           <?php foreach ($gastos as $key => $value): ?> 
+                           <tr>
+                               <td><?php echo $value['GASTORECIB'] ?> </td>
+                               <td><?php echo $value['GASTOCLIEN']." ".$value['CLIENNOMBR'] ?></td>
+                               <td><?php echo $value['GASTOCONCE']." ".$value['CONCENOMBR'] ?></td>
+                               <td><?php echo $value['GASTOFECHA'] ?></td>
+                               <td style="text-align: right"><?php echo number_format($value['GASTOVALOR'],2) ?></td>
+                           </tr>
+                           <?php $suma_gasto+=$value['GASTOVALOR'] ?>
+                            <?php $filas++; ?>
+                           <?php endforeach ?>
+                      <?php endif ?>
                         <tr>
                            <td colspan="3"></td>
                            <td> <b>TOTAL:</b> </td>
-                           <td><b><center><?php echo number_format($suma_gasto,2) ?></center></b></td>
+                           <td style="text-align: right"><b><?php echo number_format($suma_gasto,2) ?></b></td>
                        </tr>
                    </table>
                              

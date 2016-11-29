@@ -20,8 +20,11 @@ if (file_exists("../models/Conexion.php")) {
     include_once("../../models/Conexion.php");    
     require_once('../../models/Client.php');
 }
-function sortFunction( $a, $b ) {
-    return strtotime($a["FECHA"]) - strtotime($b["FECHA"]);
+if (!function_exists("sortFunction")) {
+    # code...
+    function sortFunction( $a, $b ) {
+        return strtotime($a["FECHA"]) - strtotime($b["FECHA"]);
+    }
 }
 
 class ClientImpl
@@ -100,35 +103,38 @@ class ClientImpl
         }
     }
     public function get_gastos(){
-        if (isset($_POST['codigo_vendedor']) and !empty($_POST['codigo_vendedor'])) {
-            $sql = "select gastorecib, gastoclien, cliennombr, gastoconce, concenombr, gastofecha, gastovalor
-                from gasto, cliente, concepto
-                where gastoclien = cliencodig
-                and gastoconce = concecodig
-                and gastofecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
-                and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))."', 'dd/mm/yyyy hh24:mi:ss')
-                and gastoclien = '".$_POST['codigo_vendedor']."'
-                order by gastofecha desc";
-        }else{
-            $sql = "select gastorecib, gastoclien, cliennombr, gastoconce, concenombr, gastofecha, gastovalor
-                from gasto, cliente, concepto
-                where gastoclien = cliencodig
-                and gastoconce = concecodig
-                and gastofecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
-                and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
-                order by gastofecha desc";
-        }
-
-            //echo "<pre>".$sql."</pre>";
-            $conex = Conexion::getInstancia();
-            $stid = oci_parse($conex, $sql);
-            oci_execute($stid);
-            $foo = array();
-            while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
-                $foo[]=$row;
+        if (isset($_POST['txbFechaInicio'],$_POST['txbFechaFin'])) {
+            # code...
+            if (isset($_POST['codigo_vendedor']) and !empty($_POST['codigo_vendedor'])) {
+                $sql = "select gastorecib, gastoclien, cliennombr, gastoconce, concenombr, gastofecha, gastovalor
+                    from gasto, cliente, concepto
+                    where gastoclien = cliencodig
+                    and gastoconce = concecodig
+                    and gastofecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+                    and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))."', 'dd/mm/yyyy hh24:mi:ss')
+                    and gastoclien = '".$_POST['codigo_vendedor']."'
+                    order by gastofecha desc";
+            }else{
+                $sql = "select gastorecib, gastoclien, cliennombr, gastoconce, concenombr, gastofecha, gastovalor
+                    from gasto, cliente, concepto
+                    where gastoclien = cliencodig
+                    and gastoconce = concecodig
+                    and gastofecha between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+                    and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+                    order by gastofecha desc";
             }
-            //var_dump(count($foo));
-            return $foo;        
+
+                //echo "<pre>".$sql."</pre>";
+                $conex = Conexion::getInstancia();
+                $stid = oci_parse($conex, $sql);
+                oci_execute($stid);
+                $foo = array();
+                while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
+                    $foo[]=$row;
+                }
+                //var_dump(count($foo));
+                return $foo;        
+        }
     }
     public function get_cliente_by_id($id){
         $sql = "select * from cliente where CLIENCODIG = '$id'";
@@ -163,7 +169,25 @@ class ClientImpl
             }
             return $foo;
     }
+    public function get_vendedor_by_id($id){
+        $sql = "SELECT * from vendedor 
+            inner join cliente on vendedor.vendecodig = cliente.cliencodig
+            where vendedor.vendecodig = '$id'";
+            $conex = Conexion::getInstancia();
+            $stid = oci_parse($conex, $sql);
+            oci_execute($stid);
+            $foo = array();
+            while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {            
+                $foo[]=$row;
+            }
+            /*echo "<pre>";
+            var_dump($foo[0]);
+            echo "</pre>";*/
+
+            return $foo;        
+    }
     public function get_comisiones_vendedores(){
+        if (isset($_POST['txbFechaInicio'],$_POST['txbFechaFin'])) {
             if (isset($_POST['codigo_vendedor']) and !empty($_POST['codigo_vendedor'])) {
                 $sql = "select * from vw_credito
                 where vendefecge between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
@@ -171,11 +195,13 @@ class ClientImpl
                 and vendecodig = '".$_POST['codigo_vendedor']."'
                 order by vendefecge";                
             }else{
-
-                $sql = "select * from vw_credito
-                where vendefecge between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
-                and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 23:59:59', 'dd/mm/yyyy hh24:mi:ss')
-                order by vendefecge";
+                if (isset($_POST['txbFechaInicio'],$_POST['txbFechaFin'])) {
+                    # code...
+                    $sql = "select * from vw_credito
+                    where vendefecge between to_date('".date('d/m/Y',strtotime($_POST['txbFechaInicio']))." 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+                    and to_date('".date('d/m/Y',strtotime($_POST['txbFechaFin']))." 23:59:59', 'dd/mm/yyyy hh24:mi:ss')
+                    order by vendefecge";
+                }
             }
             //$sql = "select * from vw_credito";
             //echo $sql;
@@ -191,6 +217,7 @@ class ClientImpl
             echo "</pre>";*/
 
             return $foo;
+        }
     }
         
         public function getAll()

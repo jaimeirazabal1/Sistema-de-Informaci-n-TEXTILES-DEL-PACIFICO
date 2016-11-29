@@ -136,9 +136,9 @@ class PDF extends PDF_MC_Table {
 
         $this->SetFont('Times', '', 9);
         $this->Ln();
-        // require_once("../models/ClientImpl.php"); 
-        // $client = new ClientImpl();  
-        // $data = $client->movimiento_cartera_por_cliente();
+         require_once("../models/ClientImpl.php"); 
+         $client = new ClientImpl();  
+         $data = $client->movimiento_cartera_por_cliente();
         // $saldo=0;
         // $debito=0;
         // $credito=0;
@@ -160,11 +160,16 @@ class PDF extends PDF_MC_Table {
         // $this->Cell(0, 6, utf8_decode('CÓDIGO CLIENTE: '.$cliente_[0]['CLIENCODIG']), 0, 1, 'R');
         // $this->Cell(0, 6, utf8_decode('NOMBRE CLIENTE: '.$cliente_[0]['CLIENNOMBR']), 0, 1, 'R');
         // $this->Cell(0, 6, utf8_decode('SALDO INICIAL DE CARTERA DEL CLIENTE: '.number_format($debito-$credito,2)), 0, 0, 'R');
-       
 
         $this->Ln();
         $this->Cell(110, 6, '', 0, 0, 'L');                        
-        $this->Cell(0, 6, utf8_decode('Fecha de Generación: '.date("Y/m/d H:i:s")), 0, 0, 'R');   
+        $this->Cell(0, 6, utf8_decode('Fecha de Generación: '.date("Y/m/d H:i:s")), 0, 0, 'R'); 
+        $this->Ln();
+          
+        if (isset($_POST['codigo_vendedor'])) {
+            $vendedor = $client->get_vendedor_by_id($_POST['codigo_vendedor']); 
+            $this->Cell(0, 6, utf8_decode($_POST['codigo_vendedor']." - ".$vendedor[0]['CLIENNOMBR']), 0, 0, 'R');
+        }
         $this->Ln(10);
     }
 

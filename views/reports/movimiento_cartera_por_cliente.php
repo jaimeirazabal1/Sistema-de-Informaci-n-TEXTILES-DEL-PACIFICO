@@ -61,9 +61,7 @@ and open the template in the editor.
             </nav>
             
             <section class="contenido" id="contenidoGeneral2">
-            <br>
-            <br>
-            <br>
+            
                 <h1>MOVIMIENTO CARTERA X CLIENTE</h1>
                     <?php require_once("../../models/ClientImpl.php") ?>    
                    <?php $client = new ClientImpl() ?>     

@@ -75,7 +75,7 @@ and open the template in the editor.
                         <?php 
                         echo '<input id="txbFechaInicio" min="1979-12-31" max="2200-12-31" name="txbFechaInicio" type="date" placeholder="DESDE" required value="'.$_POST['txbFechaInicio'].'">'; 
                         echo '<input id="txbFechaFin" min="1979-12-31" max="2200-12-31" name="txbFechaFin" type="date" placeholder="HASTA" required value="'.$_POST['txbFechaFin'].'">';
-                        echo '<input id="btnConsultarArqueo" type="submit" value="Consultar"><label> </label>';
+                        echo '<input id="btnConsultarArqueoDetallado" type="submit" value="Consultar"><label> </label>';
                         echo '<input id="btnGenerarArqueoDetallado" type="submit" value="Generar PDF">';                        
                         ?>
                     </form>    
@@ -89,7 +89,7 @@ and open the template in the editor.
                         echo '<input id="txbFechaInicio" min="1979-12-31" max="2200-12-31" name="txbFechaInicio" type="date" placeholder="DESDE" required value="'.$dateNow.'">'; 
                         echo '<input id="txbFechaFin" min="1979-12-31" max="2200-12-31" name="txbFechaFin" type="date" placeholder="HASTA" required value="'.$dateNow.'">';
                         ?>
-                        <input id="btnConsultarArqueo" type="submit" value="Consultar"><label> </label>
+                        <input id="btnConsultarArqueoDetallado" type="submit" value="Consultar"><label> </label>
                         <input id="btnGenerarArqueoDetallado" type="submit" value="Generar PDF">
                     </form>
                 <?php

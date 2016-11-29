@@ -30,7 +30,8 @@ class PDF extends FPDF {
 		
         $this->Ln(15);
         $this->SetFont('Times', 'B', 12);
-
+         require_once("../models/ClientImpl.php"); 
+         $client = new ClientImpl();  
         $this->SetFont('Times', '', 9);
         $this->Cell(110, 6, 'Inventario por Rango de Fechas: ', 0, 0, 'L');
         //$this->Cell(110);
@@ -41,11 +42,15 @@ class PDF extends FPDF {
         $this->Ln();
 
         $this->Cell(110, 6, utf8_decode('Desde: '.$_POST['txbFechaInicio'].'    Hasta: '.$_POST['txbFechaFin']), 0, 0, 'L');
-        
+             
         if(strcmp($_POST['codigo_vendedor'], "") == 0)
+        {
             $this->Cell(0, 6, utf8_decode('Codigo del Vendedor: TODOS'), 0, 0, 'L');
-        else
-            $this->Cell(0, 6, utf8_decode('Codigo del Vendedor: '.strtoupper($_POST['codigo_vendedor'])), 0, 0, 'L');
+        }
+        else{
+            $vendedor = $client->get_vendedor_by_id($_POST['codigo_vendedor']);
+            $this->Cell(0, 6, utf8_decode('Codigo del Vendedor: '.strtoupper($_POST['codigo_vendedor']).' - '.$vendedor[0]['CLIENNOMBR']), 0, 0, 'L');
+        }
         
         
         $this->Ln();
